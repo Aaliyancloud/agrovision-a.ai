@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroVision AI — Plant Disease Detection & Crop Protection</title>
+  
+  <!-- Google Fonts: Modern Latin & Urdu Calligraphy -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&family=Noto+Sans+Arabic:wght@400;600;700;800&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Three.js Library for 3D Plant Model -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- 1. NAVIGATION BAR WITH ANIMATED BILINGUAL TOGGLE (EN | اردو)              -->
+  <!-- ========================================================================= -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">🌱</div>
+        <span>AgroVision AI</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#why-leaves" data-i18n="navLeavesMatter">Why Leaves Matter</a></li>
+        <li><a href="#how-it-works" data-i18n="navHowItWorks">How It Works</a></li>
+        <li><a href="#scanner" data-i18n="navInstantCheck">Instant Check</a></li>
+        <li><a href="#exhibition" data-i18n="navExhibition">Plant Care Exhibition</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Animated English / Urdu Toggle Button -->
+        <div class="lang-toggle" role="group" aria-label="Language Toggle">
+          <button id="lang-en" class="lang-btn active" type="button">EN</button>
+          <button id="lang-ur" class="lang-btn" type="button">اردو</button>
+        </div>
+
+        <a href="#scanner" class="btn-primary" data-i18n="navInstantCheck">Instant Check</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. HERO SECTION: 3D PLANT & CROP PROTECTION INTRODUCTION                 -->
+  <!-- ========================================================================= -->
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <div class="section-badge" data-i18n="heroBadge">Exhibition 2026: Safe & Clean Agriculture</div>
+        <h1 data-i18n="heroTitle">Protect Crops Before <span>Disease Spreads</span></h1>
+        <p data-i18n="heroDesc">
+          AgroVision AI scans plant leaves in under a second using computer vision to diagnose blight, spot infections, and guide early organic recovery.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#scanner" class="btn-primary" data-i18n="btnTryDemo">Test Leaf Diagnosis</a>
+          <a href="#scanner" class="btn-secondary" data-i18n="btnWatchVideo">Watch Guide Video</a>
+        </div>
+
+        <!-- Real-time field stats strip -->
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">98.4%</div>
+            <div class="stat-label" data-i18n="statAccuracy">Tested Accuracy</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">10+</div>
+            <div class="stat-label" data-i18n="statDiseases">Diseases Identified</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">&lt; 1s</div>
+            <div class="stat-label" data-i18n="statSpeed">Instant Check</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Plant Model Card -->
+      <div class="plant-canvas-card">
+        <div id="canvas-container"></div>
+        <div class="canvas-controls">
+          <button id="btn-3d-healthy" class="control-btn active" type="button">Healthy Foliage</button>
+          <button id="btn-3d-blight" class="control-btn" type="button">Simulate Blight</button>
+          <button id="btn-3d-reset" class="control-btn" type="button">Reset View</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================= -->
+    <!-- 3. AI DIAGNOSTIC STUDIO (Leaf Scanner & Treatment Plans)                -->
+    <!-- ======================================================================= -->
+    <section id="scanner" class="scanner-section">
+      <div class="section-container">
+        <div class="section-header">
+          <div class="section-badge" data-i18n="scannerBadge">AI DIAGNOSTIC STUDIO</div>
+          <h2 data-i18n="scannerTitle">Inspect Leaf Health in Real-Time</h2>
+          <p data-i18n="scannerDesc">
+            Select sample leaves from the field or upload your own photo to identify pathogens and get actionable treatment plans.
+          </p>
+        </div>
+
+        <div class="scanner-card">
+          <!-- Selection Tabs -->
+          <div class="scanner-tabs">
+            <button class="tab-btn active" type="button" data-i18n="tabSamples">Sample Leaves</button>
+            <label for="leaf-file-input" class="tab-btn" style="cursor: pointer;" data-i18n="tabUpload">
+              Upload Photo
+              <input type="file" id="leaf-file-input" accept="image/*" style="display: none;">
+            </label>
+          </div>
+
+          <!-- Sample Leaves Grid -->
+          <div id="samples-grid" class="samples-grid"></div>
+
+          <!-- Diagnostic Results Box -->
+          <div id="result-box" class="result-box">
+            <div class="result-image-box">
+              <img id="result-image" src="" alt="Analyzed Tomato Leaf">
+            </div>
+
+            <div class="result-info">
+              <h3 id="result-title">Tomato Leaf Diagnostic</h3>
+              <div id="result-meta" class="result-meta"></div>
+              <div id="result-summary" class="result-summary"></div>
+              
+              <div class="treatment-grid">
+                <div id="treatment-organic" class="treatment-card"></div>
+                <div id="treatment-prevention" class="treatment-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 4. FOOTER: TRIBUTE TO PAKISTANI AGRICULTURE & EXHIBITION 2026             -->
+  <!-- ========================================================================= -->
+  <footer class="footer">
+    <div class="footer-tribute">
+      <strong style="color: #15803d; font-size: 0.95rem; display: block; margin-bottom: 6px;">🌾 Agriculture in Pakistan</strong>
+      <p data-i18n="footerTribute">
+        Agriculture is the foundation and economic backbone of Pakistan. Through modern science, computer vision, and student innovation, we strive to build sustainable crop protection for smallholder farmers across Punjab, Sindh, and beyond.
+      </p>
+    </div>
+    <p style="margin-top: 14px;" data-i18n="footerCopy">
+      AgroVision AI — Built for STEAM Exhibition 2026: Safe & Clean Agriculture
+    </p>
+  </footer>
+
+  <!-- Main Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

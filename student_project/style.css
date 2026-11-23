@@ -1,0 +1,503 @@
+/* 
+=============================================================================
+ AgroVision AI - Style Sheet (CSS)
+ Asaan aur saaf CSS styling - Class 11 Student Friendly
+=============================================================================
+*/
+
+/* 1. Global CSS Variables (Rang aur Fonts) */
+:root {
+  --cream-bg: #faf8f2;
+  --cream-surface: #ffffff;
+  --sage-soft: #edf5ef;
+  --sage-border: #cbdcd0;
+  --forest-dark: #13281c;
+  --forest-muted: #3d5947;
+  --leaf-green: #15803d;
+  --emerald-accent: #059669;
+  --tomato-red: #dc2626;
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-urdu: 'Noto Sans Arabic', 'Noto Nastaliq Urdu', sans-serif;
+}
+
+/* 2. Reset aur Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--cream-bg);
+  color: var(--forest-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* RTL Support jab Urdu zubaan select ho */
+[dir="rtl"] {
+  font-family: var(--font-urdu);
+  text-align: right;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 {
+  font-family: var(--font-urdu);
+  line-height: 1.4;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  color: var(--forest-dark);
+  font-weight: 700;
+}
+
+/* 3. Navigation Bar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(250, 248, 242, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--sage-border);
+  padding: 14px 24px;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--forest-dark);
+}
+
+.brand-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--sage-soft);
+  border: 1px solid #a7f3d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--forest-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--leaf-green);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Animated Language Toggle (EN | اردو) */
+.lang-toggle {
+  display: flex;
+  background: #e2ece5;
+  border: 1px solid var(--sage-border);
+  border-radius: 20px;
+  padding: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: var(--forest-muted);
+}
+
+.lang-btn.active {
+  background: white;
+  color: var(--forest-dark);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* 4. Buttons */
+.btn-primary {
+  background-color: var(--leaf-green);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background-color: #14532d;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: white;
+  color: var(--forest-dark);
+  border: 1px solid var(--sage-border);
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background-color: var(--sage-soft);
+}
+
+/* 5. Hero Section */
+.hero {
+  padding: 60px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.hero-text h1 span {
+  color: var(--leaf-green);
+}
+
+.hero-text p {
+  color: var(--forest-muted);
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+/* Hero Stats Row */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--sage-border);
+}
+
+.stat-item .stat-num {
+  font-family: monospace;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--leaf-green);
+}
+
+.stat-item .stat-label {
+  font-size: 0.75rem;
+  color: var(--forest-muted);
+}
+
+/* 3D Canvas Box */
+.plant-canvas-card {
+  background: white;
+  border: 1px solid var(--sage-border);
+  border-radius: 28px;
+  height: 480px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+
+#canvas-container {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--sage-border);
+  border-radius: 16px;
+  padding: 8px 14px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.control-btn {
+  background: #f4f7f5;
+  border: 1px solid var(--sage-border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--forest-muted);
+  transition: all 0.2s;
+}
+
+.control-btn.active, .control-btn:hover {
+  background: var(--leaf-green);
+  color: white;
+  border-color: var(--leaf-green);
+}
+
+/* 6. Leaf Scanner Section */
+.scanner-section {
+  padding: 70px 24px;
+  background: #f4f1e8;
+  border-top: 1px solid var(--sage-border);
+}
+
+.section-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 36px auto;
+}
+
+.section-badge {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--leaf-green);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.section-header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.section-header p {
+  color: var(--forest-muted);
+  font-size: 1rem;
+}
+
+/* Scanner Card */
+.scanner-card {
+  background: white;
+  border: 1px solid var(--sage-border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+}
+
+/* Tab Selection */
+.scanner-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #edf2ee;
+  padding-bottom: 16px;
+}
+
+.tab-btn {
+  background: #f4f7f5;
+  border: 1px solid var(--sage-border);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--forest-muted);
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: var(--leaf-green);
+  color: white;
+  border-color: var(--leaf-green);
+}
+
+/* Sample Leaves Grid */
+.samples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.sample-leaf-btn {
+  background: #fcfbf9;
+  border: 1px solid var(--sage-border);
+  border-radius: 16px;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sample-leaf-btn:hover, .sample-leaf-btn.active {
+  border-color: var(--leaf-green);
+  background: var(--sage-soft);
+  transform: translateY(-2px);
+}
+
+.sample-leaf-btn img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.sample-leaf-btn .leaf-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--forest-dark);
+}
+
+.sample-leaf-btn .leaf-type {
+  font-size: 0.75rem;
+  color: var(--forest-muted);
+}
+
+/* Diagnosis Output */
+.result-box {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sage-border);
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 28px;
+}
+
+.result-image-box img {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid var(--sage-border);
+}
+
+.result-info h3 {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.result-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 0.8rem;
+  font-family: monospace;
+}
+
+.result-summary {
+  background: var(--sage-soft);
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.treatment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.treatment-card {
+  background: #faf8f2;
+  border: 1px solid var(--sage-border);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.8rem;
+}
+
+.treatment-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--forest-dark);
+}
+
+/* 7. Footer */
+.footer {
+  background: #f4f1e8;
+  border-top: 1px solid var(--sage-border);
+  padding: 40px 24px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--forest-muted);
+}
+
+.footer-tribute {
+  background: white;
+  max-width: 900px;
+  margin: 16px auto;
+  padding: 18px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--sage-border);
+}
+
+/* Mobile Responsive */
+@media (max-width: 850px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .result-box {
+    grid-template-columns: 1fr;
+  }
+  .nav-links {
+    display: none;
+  }
+}

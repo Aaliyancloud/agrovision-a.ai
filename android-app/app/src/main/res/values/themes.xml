@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AgroVisionAI" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/leaf_emerald</item>
+        <item name="colorOnPrimary">@color/botanical_cream</item>
+        <item name="android:statusBarColor">@color/forest_green</item>
+        <item name="android:navigationBarColor">@color/botanical_cream</item>
+        <item name="android:windowBackground">@color/botanical_cream</item>
+    </style>
+</resources>

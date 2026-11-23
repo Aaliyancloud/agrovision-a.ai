@@ -1,0 +1,10 @@
+{
+  "name": "Remix AgroVision AI - Tomato Plant Disease Detection",
+  "description": "Detect tomato plant diseases instantly with AgroVision AI. Scan leaves to identify blight, curl, or mold with real-world computer vision, and receive verified organic recovery treatments.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

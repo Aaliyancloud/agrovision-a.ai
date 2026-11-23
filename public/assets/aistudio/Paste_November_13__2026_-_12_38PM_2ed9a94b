@@ -1,0 +1,602 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroVision | Meet the Minds Behind the Work</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        forest: {
+                            950: '#0a1f16',
+                            900: '#0f291e',
+                            800: '#163a2b',
+                            700: '#256647',
+                            600: '#22c55e',
+                            100: '#e6f2ec',
+                            50:  '#f4f9f6',
+                        },
+                        sage: {
+                            100: '#eef3ef',
+                            200: '#dbe5de',
+                            300: '#b7cebe',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f4f7f5;
+            color: #0a1f16;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 3D Perspective & Flip Mechanics */
+        .perspective-container {
+            perspective: 1200px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* Flip on desktop hover OR when toggled via click/tap */
+        @media (hover: hover) {
+            .perspective-container:hover .card-inner {
+                transform: rotateY(180deg);
+            }
+        }
+
+        .perspective-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Gentle organic breeze sway animation for hanging cards */
+        @keyframes breezeSway {
+            0%, 100% { transform: rotate(0deg); }
+            30% { transform: rotate(1.1deg); }
+            70% { transform: rotate(-1.1deg); }
+        }
+
+        .hanging-wrapper {
+            transform-origin: top center;
+            animation: breezeSway 6.5s ease-in-out infinite;
+        }
+
+        .hanging-wrapper:nth-child(2n) {
+            animation-delay: -1.8s;
+            animation-duration: 7.2s;
+        }
+
+        .hanging-wrapper:nth-child(3n) {
+            animation-delay: -3.4s;
+            animation-duration: 6.8s;
+        }
+
+        .hanging-wrapper:hover,
+        .hanging-wrapper.is-flipped {
+            animation-play-state: paused;
+        }
+
+        /* Perforated Botanical ID Line */
+        .botanical-divider {
+            background-image: linear-gradient(to right, #b7cebe 50%, transparent 50%);
+            background-size: 8px 2px;
+            background-repeat: repeat-x;
+        }
+
+        /* Subtle organic leaf-vein texture for card backgrounds */
+        .leaf-vein-bg {
+            background-image: radial-gradient(circle at 85% 15%, rgba(34, 197, 94, 0.12) 0%, transparent 55%),
+                              radial-gradient(circle at 15% 85%, rgba(22, 58, 43, 0.08) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-forest-800 selection:text-white">
+
+    <!-- ===================================================================== -->
+    <!-- INTEGRATION READY: Drop this <section id="team"> directly into your   -->
+    <!-- existing AgroVision website page (navigation bar removed as requested) -->
+    <!-- ===================================================================== -->
+    <section id="team" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-20">
+        
+        <!-- Editorial Header with Integrated AgroVision Emblem -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 sm:mb-14">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-forest-100 border border-forest-700/20 text-forest-900 text-xs font-semibold mb-4">
+                    <!-- Inline AgroVision Leaf-Lens Icon -->
+                    <svg class="w-4 h-4 text-forest-700" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M26 6C17.5 6 10.5 9.5 7.5 16.5C5.8 20.5 6.5 24.5 6.5 24.5C6.5 24.5 10.5 25.2 14.5 23.5C21.5 20.5 25 13.5 26 6Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5 27L13 19" stroke="#22c55e" stroke-width="2.2" stroke-linecap="round"/>
+                        <circle cx="17.5" cy="14.5" r="3.2" stroke="#22c55e" stroke-width="2"/>
+                    </svg>
+                    <span>AgroVision • Botanical AI & Research Collective</span>
+                </div>
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight text-forest-950 leading-[1.1]">
+                    Meet the minds <br class="hidden sm:inline">
+                    <span class="text-forest-800/75">behind AgroVision.</span>
+                </h2>
+            </div>
+
+            <div class="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-3">
+                <p class="text-sm sm:text-base text-forest-900/75 max-w-sm leading-relaxed border-l-2 border-forest-600 pl-4">
+                    Educators, researchers, and developers building intelligent leaf-analysis models at <strong>PSS (Class XI)</strong>.
+                </p>
+                <button id="flipAllBtn" type="button" class="px-4 py-2 rounded-xl bg-forest-900 hover:bg-forest-800 active:scale-95 text-white text-xs font-semibold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+                    <svg class="w-3.5 h-3.5 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>Flip All Cards</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TIER 1: SUPERVISOR / HEAD BRANCH (FEATURED LEADING NODE)  -->
+        <!-- ========================================================= -->
+        <div aria-label="Project Supervisor" class="relative mb-14 sm:mb-20">
+            <!-- Organic Upper Vine Branch SVG spanning across -->
+            <div class="w-full h-14 sm:h-16 relative overflow-visible pointer-events-none select-none">
+                <svg class="w-full h-full overflow-visible" viewBox="0 0 1200 70" preserveAspectRatio="none">
+                    <path d="M-20,38 Q300,12 600,32 T1220,25" fill="none" stroke="#3b5241" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M-20,42 Q320,20 600,35 T1220,30" fill="none" stroke="#5c7a64" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+                    
+                    <g class="leaf-accent" style="transform-origin: 180px 24px;">
+                        <path d="M180,24 C165,5 140,8 135,20 C148,26 168,27 180,24 Z" fill="#163a2b"/>
+                        <path d="M180,24 C192,6 215,10 218,22 C205,27 190,27 180,24 Z" fill="#256647"/>
+                    </g>
+                    <g class="leaf-accent" style="transform-origin: 600px 32px;">
+                        <path d="M600,32 C582,10 552,14 546,28 C562,36 585,36 600,32 Z" fill="#0f291e"/>
+                        <path d="M600,32 C618,10 648,14 654,28 C638,36 615,36 600,32 Z" fill="#256647"/>
+                    </g>
+                    <g class="leaf-accent" style="transform-origin: 990px 26px;">
+                        <path d="M990,26 C975,8 950,12 946,23 C960,29 978,29 990,26 Z" fill="#163a2b"/>
+                        <path d="M990,26 C1004,9 1028,13 1030,24 C1016,29 1001,29 990,26 Z" fill="#22c55e" opacity="0.85"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Centered Supervisor Hanging Card -->
+            <div class="flex justify-center -mt-6 sm:-mt-7">
+                <div id="supervisor-container" class="w-full max-w-sm sm:max-w-md">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- TIER 2: CORE TEAM BRANCHES (5 MEMBERS ON ORGANIC VINES)   -->
+        <!-- ========================================================= -->
+        <div aria-label="AgroVision Core Team" class="relative">
+            <!-- Second Winding Vine Branch SVG -->
+            <div class="w-full h-14 sm:h-16 relative overflow-visible pointer-events-none select-none">
+                <svg class="w-full h-full overflow-visible" viewBox="0 0 1200 70" preserveAspectRatio="none">
+                    <path d="M-20,25 C250,55 480,10 750,40 C950,60 1100,20 1220,30" fill="none" stroke="#3b5241" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M-20,32 C260,48 490,18 750,44 C950,54 1100,26 1220,34" fill="none" stroke="#6c8c74" stroke-width="1.6" stroke-dasharray="6 4" opacity="0.75"/>
+                    
+                    <path d="M130,34 C115,15 92,18 88,30 C102,36 118,37 130,34 Z" fill="#256647"/>
+                    <path d="M370,29 C385,10 410,12 414,25 C399,31 383,32 370,29 Z" fill="#163a2b"/>
+                    <path d="M620,28 C604,9 580,12 576,24 C590,31 607,31 620,28 Z" fill="#0f291e"/>
+                    <path d="M870,45 C886,25 912,28 915,41 C899,48 883,48 870,45 Z" fill="#256647"/>
+                    <path d="M1085,31 C1070,13 1046,16 1042,27 C1056,33 1072,34 1085,31 Z" fill="#163a2b"/>
+                </svg>
+            </div>
+
+            <!-- Responsive Grid of 5 Team Member Hanging Cards -->
+            <div id="team-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 sm:gap-7 -mt-6 sm:-mt-7">
+                <!-- Rendered dynamically via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Subtle Section Footer -->
+        <div class="mt-16 pt-6 border-t border-sage-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-forest-900/75">
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-forest-600"></span>
+                <span>Developed at <strong>PSS (Class XI)</strong> • Computer Science & AI Leaf Initiative</span>
+            </div>
+            <div class="font-medium text-forest-900">
+                Hover or tap any card to inspect role & research focus • <span class="text-forest-700 font-semibold">agrovision-a.ai.studio</span>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // =========================================================================
+        // TEAM CONFIGURATION:
+        // To add real team photos, create an "images/" folder in your project
+        // directory and save photos matching the "photo" paths below (e.g.,
+        // images/sir-abdul-razzak.jpg). If an image file isn't found yet, the
+        // card automatically displays a clean botanical portrait fallback!
+        // =========================================================================
+        const teamMembers = [
+            {
+                id: 'supervisor',
+                isSupervisor: true,
+                name: 'Sir Abdul Razzak',
+                role: 'Project Supervisor & Head',
+                subtitle: 'IT & Computer Science Specialist, PSS (Class XI)',
+                tag: 'Supervisor / Head',
+                badgeText: 'Head Mentor',
+                leafVariant: 'oak',
+                experience: 'Faculty Head',
+                photo: 'images/sir-abdul-razzak.jpg',
+                bio: 'Guiding the AgroVision AI leaf-detection project with deep expertise in Computer Science, IT systems, and academic mentorship at PSS (Class XI).',
+                focusAreas: [
+                    'Project Supervision & Direction',
+                    'Computer Science Architecture',
+                    'AI & Software Systems Mentorship'
+                ],
+                accentColor: 'from-forest-950 via-forest-900 to-forest-800',
+                initials: 'AR'
+            },
+            {
+                id: 'lead',
+                isSupervisor: false,
+                name: 'Khalil-Ur-Rehman',
+                role: 'Team Lead & Lead Researcher',
+                subtitle: 'Botanical AI & Leaf Pathology Research',
+                tag: 'Team Lead',
+                badgeText: 'Verified',
+                leafVariant: 'monstera',
+                experience: 'Lead Researcher',
+                photo: 'images/khalil-ur-rehman.jpg',
+                bio: 'Leads leaf disease dataset research, plant pathology literature review, and defines model validation criteria for accurate leaf diagnostics.',
+                focusAreas: [
+                    'Leaf Disease Research & Literature',
+                    'Team Leadership & Workflow',
+                    'AI Model Validation Criteria'
+                ],
+                accentColor: 'from-forest-900 to-forest-950',
+                initials: 'KR'
+            },
+            {
+                id: 'developer',
+                isSupervisor: false,
+                name: 'Aaliyan Awan',
+                role: 'Lead Full-Stack & UI/UX Developer',
+                subtitle: 'Web Architecture & AI Integration',
+                tag: 'Developer',
+                badgeText: 'Verified',
+                leafVariant: 'fern',
+                experience: 'Web Architect',
+                photo: 'images/aaliyan-awan.jpg',
+                bio: 'Architected and built the AgroVision web platform, seamless AI model integration, and interactive botanical user interface.',
+                focusAreas: [
+                    'Full-Stack Web Engineering',
+                    'UI/UX Design & Interactivity',
+                    'AI Inference Pipeline Integration'
+                ],
+                accentColor: 'from-forest-800 to-forest-950',
+                initials: 'AA'
+            },
+            {
+                id: 'qa',
+                isSupervisor: false,
+                name: 'Ahmed Ali',
+                role: 'QA & Model Testing Specialist',
+                subtitle: 'Accuracy Benchmarking & Validation',
+                tag: 'QA & Testing',
+                badgeText: 'Verified',
+                leafVariant: 'maple',
+                experience: 'QA Specialist',
+                photo: 'images/ahmed-ali.jpg',
+                bio: 'Conducts rigorous accuracy testing, edge-case leaf image validation, and cross-device quality assurance across the web application.',
+                focusAreas: [
+                    'Model Accuracy & Edge-Case Testing',
+                    'Cross-Device UI Quality Assurance',
+                    'Diagnostic Reliability Audits'
+                ],
+                accentColor: 'from-forest-900 to-teal-950',
+                initials: 'AA'
+            },
+            {
+                id: 'coresearcher',
+                isSupervisor: false,
+                name: 'Agha Bilal Khan',
+                role: 'Co-Researcher & Dataset Curator',
+                subtitle: 'Botanical Taxonomy & Image Labeling',
+                tag: 'Co-Researcher',
+                badgeText: 'Verified',
+                leafVariant: 'ginkgo',
+                experience: 'Co-Researcher',
+                photo: 'images/agha-bilal-khan.jpg',
+                bio: 'Curates, labels, and organizes high-resolution leaf image datasets across healthy and diseased categories for training the AgroVision AI.',
+                focusAreas: [
+                    'Leaf Dataset Curation & Labeling',
+                    'Botanical Species Classification',
+                    'Training Data Preprocessing'
+                ],
+                accentColor: 'from-forest-900 to-emerald-950',
+                initials: 'BK'
+            },
+            {
+                id: 'strategist',
+                isSupervisor: false,
+                name: 'Syed Hajan',
+                role: 'Documentation & Content Strategist',
+                subtitle: 'Research Synthesis & Technical Docs',
+                tag: 'Docs & Strategy',
+                badgeText: 'Verified',
+                leafVariant: 'olive',
+                experience: 'Content Lead',
+                photo: 'images/syed-hajan.jpg',
+                bio: 'Manages technical documentation, project reports, presentation decks, and clear research synthesis for AgroVision.',
+                focusAreas: [
+                    'Technical Documentation & Reports',
+                    'Research Synthesis & Whitepapers',
+                    'Presentation & Content Strategy'
+                ],
+                accentColor: 'from-teal-950 to-forest-950',
+                initials: 'SH'
+            }
+        ];
+
+        // Generate distinct stylized SVG leaf badges for each member
+        function getLeafVariationSVG(variant, isSupervisor) {
+            const strokeColor = isSupervisor ? '#d97706' : '#31825b';
+            const fillLight = isSupervisor ? '#fef3c7' : '#e6f2ec';
+            
+            const shapes = {
+                oak: `<path d="M12 2C9 2 7 4 7 6.5C5.5 7 4.5 8.5 5 10C4 11 4 13 5.5 14C5 15.5 6 17.5 8 18V22H10V18C12 17.5 13 15.5 12.5 14C14 13 14 11 13 10C13.5 8.5 12.5 7 11 6.5C11 4 9 2 12 2Z" fill="${fillLight}" stroke="${strokeColor}" stroke-width="1.6"/>`,
+                monstera: `<path d="M12 2C7 4 4 9 5 15C6 18 9 20 12 21C15 20 18 18 19 15C20 9 17 4 12 2ZM12 6V19M8 10L12 12M16 10L12 12M7 14L12 16M17 14L12 16" fill="${fillLight}" stroke="${strokeColor}" stroke-width="1.6" stroke-linecap="round"/>`,
+                fern: `<path d="M12 21V4M12 7L8 5M12 7L16 5M12 11L7 9M12 11L17 9M12 15L8 13M12 15L16 13" stroke="${strokeColor}" stroke-width="1.8" stroke-linecap="round"/>`,
+                maple: `<path d="M12 2L14 7L19 6L16 11L20 14L14 15L15 20H9L10 15L4 14L8 11L5 6L10 7L12 2Z" fill="${fillLight}" stroke="${strokeColor}" stroke-width="1.5" stroke-linejoin="round"/>`,
+                ginkgo: `<path d="M12 21V13M12 13C7 13 4 9 5 5C8 6 10 8 12 8C14 8 16 6 19 5C20 9 17 13 12 13Z" fill="${fillLight}" stroke="${strokeColor}" stroke-width="1.6" stroke-linejoin="round"/>`,
+                olive: `<path d="M12 3C8 7 7 13 12 20C17 13 16 7 12 3ZM12 5V21" fill="${fillLight}" stroke="${strokeColor}" stroke-width="1.6" stroke-linecap="round"/>`
+            };
+
+            return `<svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">${shapes[variant] || shapes.olive}</svg>`;
+        }
+
+        // Portrait Slot with Real <img> Support + Botanical Silhouette Fallback
+        function getBotanicalPortraitSVG(member) {
+            const bgGrad = member.isSupervisor 
+                ? 'from-amber-50 via-emerald-50 to-sage-200' 
+                : 'from-sage-100 via-forest-50 to-sage-200';
+            const ringColor = member.isSupervisor ? '#b45309' : '#256647';
+            const silhouetteColor = member.isSupervisor ? '#0f291e' : '#163a2b';
+
+            return `
+                <div class="relative w-full h-44 sm:h-48 rounded-xl bg-gradient-to-br ${bgGrad} overflow-hidden flex items-center justify-center border border-sage-200/80 group">
+                    <!-- Decorative Botanical Watermark Leaves in Background -->
+                    <svg class="absolute -right-4 -bottom-4 w-32 h-32 text-forest-600/10 pointer-events-none" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M85 15C50 15 25 35 15 75C55 65 75 40 85 15Z"/>
+                        <path d="M15 85C45 85 70 70 80 40C50 45 30 60 15 85Z"/>
+                    </svg>
+
+                    <!-- Real Team Photo (loads from images/ folder; hides cleanly if file not added yet) -->
+                    <img 
+                        src="${member.photo}" 
+                        alt="${member.name} - ${member.role}"
+                        class="absolute inset-0 w-full h-full object-cover object-top z-10 transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.style.display='none';"
+                    />
+
+                    <!-- Fallback Botanical Crest & Initials (visible whenever real photo isn't loaded) -->
+                    <div class="relative z-0 flex flex-col items-center justify-center">
+                        <div class="w-20 h-20 rounded-full bg-white shadow-md flex items-center justify-center border-2" style="border-color: ${ringColor}">
+                            <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-display font-bold text-xl sm:text-2xl tracking-wider shadow-inner" style="background-color: ${silhouetteColor}">
+                                ${member.initials}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subtle Bottom Gradient Scrim for Photo Contrast -->
+                    <div class="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-forest-950/40 to-transparent z-10 pointer-events-none"></div>
+
+                    <!-- Role Pill Overlay on Bottom Left -->
+                    <span class="absolute bottom-2.5 left-2.5 z-20 px-2.5 py-0.5 rounded-full bg-white/95 text-[10px] font-bold text-forest-950 shadow-sm border border-sage-200/80">
+                        ${member.experience}
+                    </span>
+
+                    <!-- Interactive Flip Hint Button (Bottom Right) -->
+                    <button type="button" aria-label="Flip card for details" class="flip-trigger absolute bottom-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-forest-900/90 hover:bg-forest-700 text-white flex items-center justify-center shadow-md transition-transform hover:scale-110 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+        }
+
+        // Build individual hanging botanical card HTML
+        function createCardHTML(member) {
+            const cardHeight = member.isSupervisor ? 'h-[375px] sm:h-[390px]' : 'h-[365px] sm:h-[380px]';
+            const borderAccent = member.isSupervisor 
+                ? 'border-amber-500/50 ring-2 ring-amber-400/20 shadow-xl shadow-forest-950/10' 
+                : 'border-sage-200 shadow-lg shadow-forest-950/5';
+
+            const tagBadgeStyle = member.isSupervisor
+                ? 'bg-amber-100 text-amber-900 border-amber-300'
+                : 'bg-forest-100 text-forest-800 border-forest-200';
+
+            return `
+                <div class="hanging-wrapper flex flex-col items-center">
+                    <!-- Organic Stem & Metallic Botanical Clip hanging from Vine -->
+                    <div class="flex flex-col items-center relative z-20 -mb-2.5">
+                        <div class="w-1 h-5 bg-gradient-to-b from-[#3b5241] to-[#65836d] rounded-full"></div>
+                        <svg class="w-5 h-5 text-forest-600 -mt-3 ml-4 leaf-accent" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/>
+                        </svg>
+                        <div class="w-7 h-4 rounded-t-md bg-gradient-to-b from-zinc-200 to-zinc-400 border border-zinc-400/80 shadow-sm flex items-center justify-center">
+                            <div class="w-3 h-1 rounded-full bg-zinc-600"></div>
+                        </div>
+                    </div>
+
+                    <!-- 3D Flip Container -->
+                    <div class="perspective-container w-full ${cardHeight} cursor-pointer select-none" data-card-id="${member.id}">
+                        <div class="card-inner">
+                            
+                            <!-- FRONT OF BOTANICAL ID CARD -->
+                            <div class="card-front bg-white leaf-vein-bg border ${borderAccent} p-4 flex flex-col justify-between">
+                                <!-- Top Meta Header: Role Tag & Verified Status -->
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border ${tagBadgeStyle}">
+                                            ${getLeafVariationSVG(member.leafVariant, member.isSupervisor)}
+                                            <span>${member.tag}</span>
+                                        </span>
+
+                                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-forest-800">
+                                            <svg class="w-3.5 h-3.5 text-forest-600" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span>${member.badgeText}</span>
+                                        </span>
+                                    </div>
+
+                                    <!-- Botanical Portrait / Photo Box -->
+                                    ${getBotanicalPortraitSVG(member)}
+                                </div>
+
+                                <!-- Bottom Identity Info -->
+                                <div class="pt-3">
+                                    <h3 class="font-display font-bold text-lg sm:text-xl text-forest-950 leading-tight truncate" title="${member.name}">
+                                        ${member.name}
+                                    </h3>
+                                    <p class="text-xs sm:text-sm font-semibold text-forest-800 mt-0.5 truncate">
+                                        ${member.role}
+                                    </p>
+                                    <p class="text-[11px] text-forest-900/65 mt-0.5 truncate">
+                                        ${member.subtitle}
+                                    </p>
+
+                                    <!-- Perforated Botanical ID Footer -->
+                                    <div class="botanical-divider h-[2px] w-full my-2.5"></div>
+                                    <div class="flex items-center justify-between text-[11px] font-medium text-forest-800/75">
+                                        <span>PSS • Class XI</span>
+                                        <span class="text-forest-700 font-semibold">Flip for Bio →</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BACK OF BOTANICAL ID CARD (DETAILED BIO & FOCUS) -->
+                            <div class="card-back bg-gradient-to-br ${member.accentColor} text-white p-5 flex flex-col justify-between border border-forest-700 shadow-xl">
+                                <div>
+                                    <!-- Top Back Header -->
+                                    <div class="flex items-start justify-between gap-2 border-b border-white/15 pb-3">
+                                        <div>
+                                            <span class="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">
+                                                ${member.tag}
+                                            </span>
+                                            <h3 class="font-display font-bold text-lg text-white leading-snug">
+                                                ${member.name}
+                                            </h3>
+                                            <p class="text-xs text-emerald-100/80">${member.role}</p>
+                                        </div>
+                                        <button type="button" aria-label="Flip back" class="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <!-- Description / Bio -->
+                                    <p class="mt-3.5 text-xs sm:text-[13px] leading-relaxed text-emerald-50/95">
+                                        ${member.bio}
+                                    </p>
+                                </div>
+
+                                <!-- Core Focus Areas -->
+                                <div class="pt-3 border-t border-white/15">
+                                    <p class="text-[10px] uppercase tracking-wider text-emerald-300/90 font-semibold mb-1.5">
+                                        Key Contributions
+                                    </p>
+                                    <ul class="space-y-1">
+                                        ${member.focusAreas.map(area => `
+                                            <li class="flex items-center gap-1.5 text-xs text-white/90">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                                                <span class="truncate">${area}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render Cards into DOM and Attach Interactive Touch/Click Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const supervisorContainer = document.getElementById('supervisor-container');
+            const teamGrid = document.getElementById('team-grid');
+            const flipAllBtn = document.getElementById('flipAllBtn');
+
+            const supervisor = teamMembers.find(m => m.isSupervisor);
+            const members = teamMembers.filter(m => !m.isSupervisor);
+
+            if (supervisor) {
+                supervisorContainer.innerHTML = createCardHTML(supervisor);
+            }
+
+            teamGrid.innerHTML = members.map(member => createCardHTML(member)).join('');
+
+            // Add click/tap support for mobile & desktop toggling
+            const cardContainers = document.querySelectorAll('.perspective-container');
+            cardContainers.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                    const wrapper = card.closest('.hanging-wrapper');
+                    if (wrapper) {
+                        wrapper.classList.toggle('is-flipped', card.classList.contains('flipped'));
+                    }
+                });
+            });
+
+            // "Flip All" button functionality
+            let allFlipped = false;
+            flipAllBtn.addEventListener('click', () => {
+                allFlipped = !allFlipped;
+                cardContainers.forEach(card => {
+                    card.classList.toggle('flipped', allFlipped);
+                    const wrapper = card.closest('.hanging-wrapper');
+                    if (wrapper) {
+                        wrapper.classList.toggle('is-flipped', allFlipped);
+                    }
+                });
+                flipAllBtn.querySelector('span').textContent = allFlipped ? 'Reset Cards' : 'Flip All Cards';
+            });
+        });
+    </script>
+</body>
+</html>
