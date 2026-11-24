@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Leaf, X, Sparkles, Globe, Compass, ArrowRight } from 'lucide-react';
+import { Leaf, X, Sparkles, Globe, Compass, ArrowRight, Smartphone, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { PWAInstallButton } from './PWAInstallButton';
 
 interface NavbarProps {
   onScanClick: () => void;
@@ -26,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onScanClick }) => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#faf8f2]/92 backdrop-blur-md border-b border-[#cbdcd0]/70 transition-colors">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#faf8f2] border-b border-[#cbdcd0]/70 transition-colors">
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-4 lg:gap-6 px-4 sm:px-6 lg:px-8 h-16 sm:h-18">
         {/* Zone 1: Original Leaf Emblem & Wordmark */}
         <a
@@ -108,9 +107,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onScanClick }) => {
             </button>
           </div>
 
-          <div className="flex shrink-0">
-            <PWAInstallButton compact />
-          </div>
+          <a
+            href="https://agrovisionai.ai.studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 text-xs font-semibold text-[#14532d] bg-[#edf5ef] hover:bg-[#dcebe0] border border-[#cbdcd0] rounded-xl transition-all shrink-0 whitespace-nowrap"
+            title={isUrdu ? 'ایگرو وژن موبائل ایپ کھولیں' : 'Open AgroVision Mobile App'}
+          >
+            <Smartphone className="w-3.5 h-3.5 text-[#166534] shrink-0" />
+            <span>{isUrdu ? 'موبائل ایپ' : 'Mobile App'}</span>
+            <ArrowUpRight className="w-3 h-3 text-[#166534]/75 shrink-0" />
+          </a>
 
           {/* Clean Modern Green Leaf Action Button Inside Navbar */}
           <button
@@ -195,7 +202,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onScanClick }) => {
               <Sparkles className="w-4 h-4 shrink-0" />
               <span>{t.nav.checkLeafBtn}</span>
             </button>
-            <PWAInstallButton />
+            <a
+              href="https://agrovisionai.ai.studio"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-3 px-4 text-xs sm:text-sm font-bold text-[#14532d] bg-[#edf5ef] hover:bg-[#dcebe0] border border-[#cbdcd0] rounded-2xl transition-all flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap"
+            >
+              <Smartphone className="w-4 h-4 text-[#166534] shrink-0" />
+              <span>{isUrdu ? 'موبائل ایپ' : 'Mobile App'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#166534]/75 shrink-0" />
+            </a>
           </div>
 
           <nav

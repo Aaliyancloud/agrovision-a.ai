@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BadgeCheck, Pause, Play, Sparkles, Star, TrendingUp } from 'lucide-react';
+import React from 'react';
+import { BadgeCheck, Sparkles, Star, TrendingUp } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { ScrollReveal, WordReveal } from './ScrollReveal';
 
@@ -23,96 +23,54 @@ interface InvestorDispatch {
 
 const INVESTOR_DISPATCHES: InvestorDispatch[] = [
   {
-    id: 'mohtashim-1',
+    id: 'mohtashim-raza',
     name: 'Mohtashim Raza',
     urduName: 'محتشم رضا',
     handle: '@mohtashim_raza',
-    role: 'Primary Project Investor',
-    urduRole: 'مرکزی پروجیکٹ انویسٹر',
-    endorsementTag: 'Strategic Backing',
-    urduEndorsementTag: 'اسٹریٹجک سرمایہ کاری',
+    role: 'Project Investor',
+    urduRole: 'پروجیکٹ انویسٹر',
+    endorsementTag: 'Project Backing',
+    urduEndorsementTag: 'پروجیکٹ معاونت',
     stars: 5,
     message:
-      'Investing in AgroVision AI was an instant decision. Seeing this team build dual-stage computer vision for tomato leaf diseases truly elevates student AgriTech in Pakistan.',
+      'Investing in this young team and AgroVision AI was an immediate decision. Building dual-stage tomato leaf disease detection with real field impact truly elevates student AgriTech in Pakistan.',
     urduMessage:
-      'ایگرو وژن اے آئی میں سرمایہ کاری ایک فوری فیصلہ تھا۔ ٹماٹر کے پتوں کی بیماریوں کے لیے دو مراحل پر مشتمل اے آئی ماڈل بنانا واقعی قابلِ فخر کامیابی ہے۔',
-    highlightStat: '5.0 / 5.0 Backer Rating',
-    urduHighlightStat: '5.0 / 5.0 انویسٹر ریٹنگ',
+      'اس نوجوان ٹیم اور ایگرو وژن اے آئی میں سرمایہ کاری ایک فوری فیصلہ تھا۔ ٹماٹر کے پتوں کی بیماریوں کی دو مراحل میں تشخیص پاکستان میں طلبہ کی ایگری ٹیک کا معیار بلند کر رہی ہے۔',
+    highlightStat: '5.0 / 5.0 Rating',
+    urduHighlightStat: '5.0 / 5.0 ریٹنگ',
     accent: 'emerald',
-    bobDelay: '0s'
+    bobDelay: '0s',
   },
   {
-    id: 'agha-1',
+    id: 'agha-hussain',
     name: 'Agha Hussain',
     urduName: 'آغا حسین',
     handle: '@agha_hussain',
-    role: 'Seed & Venture Investor',
-    urduRole: 'سیڈ اور وینچر انویسٹر',
-    endorsementTag: 'Seed Funded',
-    urduEndorsementTag: 'سیڈ فنڈنگ',
+    role: 'Project Investor',
+    urduRole: 'پروجیکٹ انویسٹر',
+    endorsementTag: 'Project Backing',
+    urduEndorsementTag: 'پروجیکٹ معاونت',
     stars: 5,
     message:
-      'Five stars for the vision and execution! AgroVision AI puts real-time plant pathology and Urdu voice guidance straight into the hands of everyday farmers.',
+      'Five stars for the dedication and execution of this young team. AgroVision AI puts fast leaf pathology diagnostics, soil telemetry, and clear Urdu guidance straight into farmers’ hands.',
     urduMessage:
-      'اس وژن اور بہترین کارکردگی کے لیے پورے پانچ ستارے! ایگرو وژن اے آئی کسانوں کے ہاتھوں میں فوری تشخیص اور اردو رہنمائی فراہم کر رہا ہے۔',
-    highlightStat: 'Raising AgriTech Impact',
-    urduHighlightStat: 'زرعی ٹیکنالوجی کا فروغ',
+      'اس نوجوان ٹیم کی محنت اور بہترین کارکردگی کے لیے پورے پانچ ستارے۔ ایگرو وژن اے آئی کسانوں کے لیے فوری تشخیص اور واضح اردو رہنمائی فراہم کر رہا ہے۔',
+    highlightStat: '5.0 / 5.0 Rating',
+    urduHighlightStat: '5.0 / 5.0 ریٹنگ',
     accent: 'amber',
-    bobDelay: '-1.1s'
+    bobDelay: '-1.3s',
   },
-  {
-    id: 'mohtashim-2',
-    name: 'Mohtashim Raza',
-    urduName: 'محتشم رضا',
-    handle: '@mohtashim_raza',
-    role: 'Lead Patron & Investor',
-    urduRole: 'سرپرست و انویسٹر',
-    endorsementTag: 'Raising Excellence',
-    urduEndorsementTag: 'معیار کی تحسین',
-    stars: 5,
-    message:
-      'Proud to raise and back this young research team. From soil moisture sensor context to formatted pathology PDFs, every detail solves a real field challenge.',
-    urduMessage:
-      'اس نوجوان تحقیقی ٹیم کی حوصلہ افزائی اور سرمایہ کاری پر فخر ہے۔ مٹی کے سینسر سے لے کر تشخیصی رپورٹ تک ہر فیچر حقیقی مسائل حل کرتا ہے۔',
-    highlightStat: 'Backed for Scale',
-    urduHighlightStat: 'وسیع پیمانے پر معاونت',
-    accent: 'emerald',
-    bobDelay: '-2.2s'
-  },
-  {
-    id: 'agha-2',
-    name: 'Agha Hussain',
-    urduName: 'آغا حسین',
-    handle: '@agha_hussain',
-    role: 'AgriTech Investor & Supporter',
-    urduRole: 'ایگری ٹیک انویسٹر',
-    endorsementTag: 'Full Endorsement',
-    urduEndorsementTag: 'مکمل تائید',
-    stars: 5,
-    message:
-      'Remarkable discipline, scientific honesty, and craft. Investing in teams like AgroVision AI means investing in smarter harvests and sustainable crop protection.',
-    urduMessage:
-      'شاندار نظم و ضبط اور سائنسی دیانت۔ ایگرو وژن اے آئی جیسی ٹیموں میں سرمایہ کاری بہتر فصلوں اور پائیدار زراعت کے روشن مستقبل کی ضمانت ہے۔',
-    highlightStat: 'Verified 5-Star Patron',
-    urduHighlightStat: 'تصدیق شدہ فائیو اسٹار سرپرست',
-    accent: 'amber',
-    bobDelay: '-3.1s'
-  }
 ];
 
 const TickerItem: React.FC<{ isUrdu: boolean; idx: number }> = ({ isUrdu, idx }) => {
   const items = isUrdu
     ? [
-        '★ محتشم رضا — 5.0 اسٹارز اور پروجیکٹ انویسٹمنٹ',
-        '◆ آغا حسین — 5.0 اسٹارز اور زرعی اے آئی کی سرپرستی',
-        '★ ایگرو وژن اے آئی کے لیے سرمایہ کاروں کی مکمل تحسین',
-        '◆ طلبہ کی تحقیق سے کسانوں کے لیے جدید حل'
+        '★ محتشم رضا — 5.0 اسٹارز اور پروجیکٹ انویسٹر',
+        '◆ آغا حسین — 5.0 اسٹارز اور پروجیکٹ انویسٹر',
       ]
     : [
-        '★ Mohtashim Raza — 5.0 Stars & Strategic Investment Backing',
-        '◆ Agha Hussain — 5.0 Stars & Seed AgriTech Endorsement',
-        '★ Raising Student-Led Tomato Pathology AI in Pakistan',
-        '◆ Continuous Investor Support for Precision Crop Health'
+        '★ Mohtashim Raza — 5.0 Stars · Project Investor',
+        '◆ Agha Hussain — 5.0 Stars · Project Investor',
       ];
 
   const text = items[idx % items.length];
@@ -127,7 +85,6 @@ const TickerItem: React.FC<{ isUrdu: boolean; idx: number }> = ({ isUrdu, idx })
 
 export const InvestorsShowcaseSection: React.FC = () => {
   const { isUrdu } = useLanguage();
-  const [isPaused, setIsPaused] = useState(false);
 
   const renderCarriage = (item: InvestorDispatch, passKey: string, idx: number) => {
     const isEmerald = item.accent === 'emerald';
@@ -142,15 +99,14 @@ export const InvestorsShowcaseSection: React.FC = () => {
         key={`${passKey}-${item.id}`}
         className="flex items-center shrink-0"
       >
-        {/* Tweet / Investor Appreciation Carriage — Strictly NO Investor Portrait/Picture */}
         <article
           dir={isUrdu ? 'rtl' : 'ltr'}
           style={{ '--bob-delay': item.bobDelay } as React.CSSProperties}
-          className={`investor-carriage-bob group relative w-[310px] sm:w-[370px] rounded-2xl bg-white border ${
+          className={`investor-carriage-bob group relative w-[320px] sm:w-[410px] rounded-2xl bg-white border ${
             isEmerald
               ? 'border-[#cbdcd0] hover:border-emerald-500/70'
               : 'border-amber-200/90 hover:border-amber-500/70'
-          } p-5 shadow-md shadow-[#13281c]/5 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between gap-3.5 overflow-hidden`}
+          } p-5 sm:p-6 shadow-md shadow-[#13281c]/5 hover:shadow-xl hover:shadow-emerald-900/10 transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between gap-3.5 overflow-hidden`}
         >
           {/* Subtle top kinetic accent bar */}
           <div
@@ -161,7 +117,7 @@ export const InvestorsShowcaseSection: React.FC = () => {
             }`}
           />
 
-          {/* Top Editorial Header: Name Only (No Avatar/Picture), Role & Verified Backing Mark */}
+          {/* Top Editorial Header */}
           <div className="flex items-start justify-between gap-3 pt-0.5">
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
@@ -215,7 +171,7 @@ export const InvestorsShowcaseSection: React.FC = () => {
             </span>
           </div>
 
-          {/* Tweet / Appreciation Message */}
+          {/* Investor Endorsement Message */}
           <p className="text-xs sm:text-[13px] text-[#3d5947] leading-relaxed">
             “{cardMessage}”
           </p>
@@ -232,10 +188,10 @@ export const InvestorsShowcaseSection: React.FC = () => {
         {/* Kinetic Train Coupler Link Between Carriages */}
         <div
           aria-hidden="true"
-          className="flex items-center px-2 sm:px-3 shrink-0"
+          className="flex items-center px-3 sm:px-4 shrink-0"
         >
           <span className="w-2 h-2 rounded-full border border-emerald-600/60 bg-[#faf8f2]" />
-          <span className="w-5 sm:w-7 h-[2px] bg-gradient-to-r from-emerald-500/60 via-amber-500/50 to-emerald-500/60" />
+          <span className="w-6 sm:w-8 h-[2px] bg-gradient-to-r from-emerald-500/60 via-amber-500/50 to-emerald-500/60" />
           <span className="w-2 h-2 rounded-full border border-emerald-600/60 bg-[#faf8f2]" />
         </div>
       </div>
@@ -276,12 +232,12 @@ export const InvestorsShowcaseSection: React.FC = () => {
 
             <p className="text-sm sm:text-base text-[#3d5947] leading-relaxed">
               {isUrdu
-                ? 'محتشم رضا اور آغا حسین کی جانب سے ایگرو وژن اے آئی کے لیے مسلسل فیڈبیک، سرمایہ کاری اور تحسین کا رواں سلسلہ۔'
-                : 'Live appreciation dispatches and five-star investment endorsements from Mohtashim Raza and Agha Hussain gliding continuously in our showcase loop.'}
+                ? 'محتشم رضا اور آغا حسین کی جانب سے ایگرو وژن اے آئی اور ہماری نوجوان ٹیم کے لیے سرمایہ کاری اور تحسین کا رواں سلسلہ۔'
+                : 'Five-star investment endorsements from Mohtashim Raza and Agha Hussain backing our young team in a continuous showcase loop.'}
             </p>
           </div>
 
-          {/* Investor Roster Summary & Motion Control */}
+          {/* Investor Roster Summary (No Pause Button) */}
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <div className="px-3.5 py-2 rounded-xl bg-[#edf5ef] border border-[#cbdcd0] text-xs font-semibold text-[#13281c] flex items-center gap-2">
               <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
@@ -291,34 +247,12 @@ export const InvestorsShowcaseSection: React.FC = () => {
                   : 'Mohtashim Raza · Agha Hussain'}
               </span>
             </div>
-
-            <button
-              type="button"
-              onClick={() => setIsPaused((prev) => !prev)}
-              className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#edf5ef] border border-[#cbdcd0] text-xs font-semibold text-[#13281c] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
-              aria-pressed={isPaused}
-            >
-              {isPaused ? (
-                <>
-                  <Play className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>{isUrdu ? 'لوپ چلائیں' : 'Resume Loop'}</span>
-                </>
-              ) : (
-                <>
-                  <Pause className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>{isUrdu ? 'لوپ روکیں' : 'Pause Loop'}</span>
-                </>
-              )}
-            </button>
           </div>
         </ScrollReveal>
       </div>
 
-      {/* Continuous Train-Loop Viewport (Gliding Conveyor: Never Sticky) */}
-      <div
-        className="investor-train-viewport relative w-full overflow-hidden py-3"
-        data-paused={isPaused ? 'true' : 'false'}
-      >
+      {/* Continuous Train-Loop Viewport */}
+      <div className="investor-train-viewport relative w-full overflow-hidden py-3">
         {/* Top Kinetic Guide Rail with Traveling Emerald Signal */}
         <div
           aria-hidden="true"
@@ -327,33 +261,35 @@ export const InvestorsShowcaseSection: React.FC = () => {
           <span className="investor-rail-pulse absolute top-0 left-0 w-28 h-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
         </div>
 
-        {/* Gliding Tweet Train Track (Always LTR inner flex track so CSS -50% translates seamlessly in EN & RTL Urdu) */}
+        {/* Continuous Seamless Conveyor Track of the 2 Investor Tweets */}
         <div className="investor-edge-fade w-full overflow-hidden">
           <div dir="ltr" className="investor-train-track py-2">
-            {/* Primary Track */}
+            {/* Primary Track Half (2 passes of the 2 tweets so wide viewports never show a gap) */}
             <div className="flex items-stretch shrink-0">
-              {INVESTOR_DISPATCHES.map((item, idx) => renderCarriage(item, 'primary', idx))}
+              {INVESTOR_DISPATCHES.map((item, idx) => renderCarriage(item, 'primary-a', idx))}
+              {INVESTOR_DISPATCHES.map((item, idx) => renderCarriage(item, 'primary-b', idx))}
             </div>
-            {/* Seamless Duplicate Clone Track */}
+            {/* Seamless Duplicate Clone Track Half */}
             <div className="flex items-stretch shrink-0" aria-hidden="true">
-              {INVESTOR_DISPATCHES.map((item, idx) => renderCarriage(item, 'clone', idx))}
+              {INVESTOR_DISPATCHES.map((item, idx) => renderCarriage(item, 'clone-a', idx))}
+              {INVESTOR_DISPATCHES.map((item, idx) => renderCarriage(item, 'clone-b', idx))}
             </div>
           </div>
         </div>
 
-        {/* Counter-Gliding Lower Appraisal & Investment Rail */}
+        {/* Counter-Gliding Lower Ticker Rail */}
         <div
           aria-hidden="true"
           className="mt-5 border-y border-[#cbdcd0]/80 bg-[#edf5ef]/75 overflow-hidden py-1"
         >
           <div dir="ltr" className="investor-train-ticker-rev">
             <div className="flex items-center shrink-0">
-              {Array.from({ length: 4 }).map((_, idx) => (
+              {Array.from({ length: 6 }).map((_, idx) => (
                 <TickerItem key={`t1-${idx}`} isUrdu={isUrdu} idx={idx} />
               ))}
             </div>
             <div className="flex items-center shrink-0">
-              {Array.from({ length: 4 }).map((_, idx) => (
+              {Array.from({ length: 6 }).map((_, idx) => (
                 <TickerItem key={`t2-${idx}`} isUrdu={isUrdu} idx={idx} />
               ))}
             </div>

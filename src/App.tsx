@@ -1,8 +1,7 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useRef, useState } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { SensorProvider } from './context/SensorContext';
 import { MotionProvider } from './context/MotionContext';
-import { ScanHistoryProvider } from './context/ScanHistoryContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Footer } from './components/Footer';
@@ -12,9 +11,7 @@ import { AnimatedFavicon } from './components/AnimatedFavicon';
 import { InitialSiteLoader } from './components/InitialSiteLoader';
 import { DeferredSection } from './components/DeferredSection';
 import { SmartSensorSection } from './components/SmartSensorSection';
-import { OfflineIndicator } from './components/OfflineIndicator';
 import type { DiagnosticExternalAction } from './components/DiagnosticStudio';
-import type { MobileAppTab } from './mobile/MobileAppView';
 
 const AgriculturalImpact = lazy(() =>
   import('./components/AgriculturalImpact').then((m) => ({ default: m.AgriculturalImpact }))
@@ -43,9 +40,6 @@ const ProjectCreditsSection = lazy(() =>
 const InvestorsShowcaseSection = lazy(() =>
   import('./components/InvestorsShowcaseSection').then((m) => ({ default: m.InvestorsShowcaseSection }))
 );
-const MobileAppView = lazy(() =>
-  import('./mobile/MobileAppView').then((m) => ({ default: m.MobileAppView }))
-);
 
 function SectionPlaceholder({ id, minHeightClass = 'py-16' }: { id?: string; minHeightClass?: string }) {
   return (
@@ -55,76 +49,11 @@ function SectionPlaceholder({ id, minHeightClass = 'py-16' }: { id?: string; min
   );
 }
 
-function isMobileAppUrl(): { isAppMode: boolean; tab: MobileAppTab; action: 'camera' | null } {
-  if (typeof window === 'undefined') {
-    return { isAppMode: false, tab: 'home', action: null };
-  }
-  const url = new URL(window.location.href);
-  const pathNormalized = url.pathname.replace(/\/+$/, '');
-  const modeParam = url.searchParams.get('mode');
-  const tabParam = url.searchParams.get('tab');
-  const actionParam = url.searchParams.get('action');
-
-  const isAppMode = pathNormalized === '/app' || modeParam === 'app';
-  const validTabs: MobileAppTab[] = ['home', 'scan', 'care', 'history'];
-  const tab: MobileAppTab = validTabs.includes(tabParam as MobileAppTab)
-    ? (tabParam as MobileAppTab)
-    : actionParam === 'camera'
-    ? 'scan'
-    : 'home';
-
-  return {
-    isAppMode,
-    tab,
-    action: actionParam === 'camera' ? 'camera' : null
-  };
-}
-
 function MainAppContent() {
   const { isUrdu } = useLanguage();
   const [forceLoadDiagnostic, setForceLoadDiagnostic] = useState(false);
   const [diagnosticAction, setDiagnosticAction] = useState<DiagnosticExternalAction | null>(null);
   const actionNonceRef = useRef(0);
-  const [appRouteState, setAppRouteState] = useState(() => isMobileAppUrl());
-
-  useEffect(() => {
-    const syncRoute = () => setAppRouteState(isMobileAppUrl());
-    const handleOpenAppMode = () => {
-      const url = new URL(window.location.href);
-      url.searchParams.set('mode', 'app');
-      window.history.pushState({}, '', url.pathname + url.search);
-      setAppRouteState({ isAppMode: true, tab: 'home', action: null });
-    };
-
-    window.addEventListener('popstate', syncRoute);
-    window.addEventListener('agrovision-open-app', handleOpenAppMode);
-    return () => {
-      window.removeEventListener('popstate', syncRoute);
-      window.removeEventListener('agrovision-open-app', handleOpenAppMode);
-    };
-  }, []);
-
-  if (appRouteState.isAppMode) {
-    return (
-      <ScanHistoryProvider>
-        <Suspense fallback={<SectionPlaceholder minHeightClass="min-h-screen" />}>
-          <MobileAppView
-            initialTab={appRouteState.tab}
-            initialAction={appRouteState.action}
-            onExitToWebsite={() => {
-              const url = new URL(window.location.href);
-              url.searchParams.delete('mode');
-              url.searchParams.delete('tab');
-              url.searchParams.delete('action');
-              const targetPath = url.pathname === '/app' ? '/' : url.pathname;
-              window.history.pushState({}, '', targetPath + url.search);
-              setAppRouteState({ isAppMode: false, tab: 'home', action: null });
-            }}
-          />
-        </Suspense>
-      </ScanHistoryProvider>
-    );
-  }
 
   const scrollToDiagnostic = () => {
     setForceLoadDiagnostic(true);
@@ -244,7 +173,6 @@ function MainAppContent() {
 
       <Footer />
       <ScrollToTopButton />
-      <OfflineIndicator />
     </div>
   );
 }

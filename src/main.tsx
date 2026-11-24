@@ -1,8 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import { registerSW } from 'virtual:pwa-register';
 import App from './App.tsx';
 import './index.css';
-import { TOMATO_DISEASES, STEAM_EXHIBITION_SAMPLES } from './data/tomatoDiseases';
 
 // Safely handle benign sandbox environment rejections (such as WebSocket closures or aborted media in iframes)
 if (typeof window !== 'undefined') {
@@ -20,42 +18,36 @@ if (typeof window !== 'undefined') {
     }
   });
 
-  // Purge legacy v1 image cache so updated assets always appear on returning laptops
+  // Automatically remove any legacy installed PWA service workers & cached offline assets
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .getRegistrations()
+      .then((registrations) => Promise.all(registrations.map((reg) => reg.unregister())))
+      .catch(() => {});
+  }
   if ('caches' in window) {
-    window.caches.delete('agrovision-specimen-images').catch(() => {});
+    window.caches
+      .keys()
+      .then((keys) => Promise.all(keys.map((key) => window.caches.delete(key))))
+      .catch(() => {});
   }
-
-  // Register Service Worker for offline field usage in areas with poor or zero connectivity
   try {
-    const updateSW = registerSW({
-      immediate: true,
-      onNeedRefresh() {
-        void updateSW(true);
-      },
-      onOfflineReady() {
-        console.info('AgroVision AI offline field cache ready.');
-      },
-      onRegisterError(error) {
-        console.warn('Service worker registration skipped:', error);
-      }
-    });
+    localStorage.removeItem('agrovision_offline_diagnostic_catalog_v1');
+    localStorage.removeItem('agrovision_scan_history_v1');
+    const currentUrl = new URL(window.location.href);
+    if (
+      currentUrl.pathname === '/app' ||
+      currentUrl.searchParams.has('mode') ||
+      currentUrl.searchParams.has('tab')
+    ) {
+      currentUrl.pathname = '/';
+      currentUrl.searchParams.delete('mode');
+      currentUrl.searchParams.delete('tab');
+      currentUrl.searchParams.delete('action');
+      window.history.replaceState({}, '', currentUrl.pathname + currentUrl.search);
+    }
   } catch {
-    // Ignore registration issues in restricted preview frames
-  }
-
-  // Persist essential diagnostic pathology catalog locally for zero-connectivity fallback
-  try {
-    localStorage.setItem(
-      'agrovision_offline_diagnostic_catalog_v1',
-      JSON.stringify({
-        cachedAt: new Date().toISOString(),
-        diseaseCount: TOMATO_DISEASES.length,
-        sampleCount: STEAM_EXHIBITION_SAMPLES.length,
-        diseases: TOMATO_DISEASES
-      })
-    );
-  } catch {
-    // Ignore storage quota restrictions
+    // Ignore storage/history errors
   }
 }
 

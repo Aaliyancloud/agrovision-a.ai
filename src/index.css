@@ -1431,8 +1431,7 @@ img,
 }
 
 .investor-train-viewport:hover .investor-train-track,
-.investor-train-viewport:focus-within .investor-train-track,
-.investor-train-viewport[data-paused="true"] .investor-train-track {
+.investor-train-viewport:focus-within .investor-train-track {
   animation-play-state: paused;
 }
 
@@ -1443,8 +1442,7 @@ img,
   will-change: transform;
 }
 
-.investor-train-viewport:hover .investor-train-ticker-rev,
-.investor-train-viewport[data-paused="true"] .investor-train-ticker-rev {
+.investor-train-viewport:hover .investor-train-ticker-rev {
   animation-play-state: paused;
 }
 

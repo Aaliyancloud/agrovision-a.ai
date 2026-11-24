@@ -33,7 +33,6 @@ import { STEAM_EXHIBITION_SAMPLES } from '../data/tomatoDiseases';
 import { analyzeLeafImage, computeSensorInsights } from '../services/diseaseClassifier';
 import { useLanguage } from '../context/LanguageContext';
 import { useSensors } from '../context/SensorContext';
-import { saveScanToStorage } from '../context/ScanHistoryContext';
 import { PrintableDiagnosticReport } from './PrintableDiagnosticReport';
 
 const VideoTutorialModal = lazy(() =>
@@ -397,10 +396,6 @@ export const DiagnosticStudio: React.FC<DiagnosticStudioProps> = ({
       setDiagnosticResult(result);
       setAnalysisProgress(100);
       setIsAnalyzing(false);
-
-      if (recordToHistory) {
-        void saveScanToStorage(result, source);
-      }
 
       if (result.isTomatoLeaf) {
         setShowSuccessToast(true);

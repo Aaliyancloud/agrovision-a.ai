@@ -89,58 +89,33 @@ const HeroTypewriter: React.FC<HeroTypewriterProps> = ({ phrases, calmMode }) =>
 };
 
 /** Lightweight instant SVG placeholder while Three.js loads in background */
-const BotanicalPlantSkeleton: React.FC<{ isUrdu: boolean }> = ({ isUrdu }) => (
+const BotanicalPlantSkeleton: React.FC = () => (
   <div className="w-full h-full flex flex-col items-center justify-center relative select-none pointer-events-none">
-    <div className="relative flex flex-col items-center justify-center">
-      <div className="w-60 h-60 sm:w-72 sm:h-72 rounded-full bg-radial from-[#cbdcd0]/50 via-[#edf5ef]/35 to-transparent flex items-center justify-center">
-        <svg
-          viewBox="0 0 220 280"
-          className="w-44 h-56 sm:w-52 sm:h-64 drop-shadow-sm animate-gentle-float"
-          aria-hidden="true"
-        >
-          {/* Soft ground shadow */}
-          <ellipse cx="110" cy="250" rx="56" ry="12" fill="#13281c" fillOpacity="0.12" />
-          {/* Terracotta pot */}
-          <path d="M76 206 L144 206 L134 250 L86 250 Z" fill="#bf6747" />
-          <rect x="70" y="198" width="80" height="10" rx="5" fill="#cf7655" />
-          {/* Main stem */}
-          <path
-            d="M110 198 C112 162, 105 130, 112 96 C116 74, 108 54, 110 38"
-            stroke="#166534"
-            strokeWidth="5.5"
-            strokeLinecap="round"
-            fill="none"
-          />
-          {/* Leaves */}
-          <g className="animate-leaf-sway-subtle" style={{ transformOrigin: '110px 140px' }}>
-            <path
-              d="M110 160 C82 146, 56 154, 48 168 C68 178, 92 174, 110 160 Z"
-              fill="#1f7a3a"
-            />
-            <path
-              d="M111 132 C140 116, 168 124, 176 140 C156 150, 130 146, 111 132 Z"
-              fill="#1f7a3a"
-            />
-            <path
-              d="M109 104 C80 86, 54 94, 46 112 C68 122, 92 118, 109 104 Z"
-              fill="#2d8a4b"
-            />
-            <path
-              d="M111 76 C138 60, 162 66, 170 82 C152 92, 128 88, 111 76 Z"
-              fill="#2d8a4b"
-            />
-          </g>
-          {/* Cherry/Tomato accents */}
-          <circle cx="128" cy="150" r="11" fill="#df2b18" />
-          <circle cx="144" cy="144" r="8" fill="#df2b18" />
-          <circle cx="94" cy="122" r="9.5" fill="#df2b18" />
-        </svg>
-      </div>
-      <div className="mt-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-[#cbdcd0] text-[11px] font-mono text-[#13281c] shadow-xs flex items-center gap-2">
-        <span className="w-2.5 h-2.5 rounded-full border-2 border-[#166534]/30 border-t-[#166534] animate-spin" />
-        <span>{isUrdu ? 'تھری ڈی پودا تیار ہو رہا ہے...' : 'Preparing Interactive 3D Plant...'}</span>
-      </div>
-    </div>
+    <svg
+      viewBox="0 0 220 280"
+      className="w-44 h-56 sm:w-52 sm:h-64 animate-gentle-float"
+      aria-hidden="true"
+    >
+      <ellipse cx="110" cy="250" rx="56" ry="12" fill="#13281c" fillOpacity="0.12" />
+      <path d="M76 206 L144 206 L134 250 L86 250 Z" fill="#bf6747" />
+      <rect x="70" y="198" width="80" height="10" rx="5" fill="#cf7655" />
+      <path
+        d="M110 198 C112 162, 105 130, 112 96 C116 74, 108 54, 110 38"
+        stroke="#166534"
+        strokeWidth="5.5"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <g className="animate-leaf-sway-subtle" style={{ transformOrigin: '110px 140px' }}>
+        <path d="M110 160 C82 146, 56 154, 48 168 C68 178, 92 174, 110 160 Z" fill="#1f7a3a" />
+        <path d="M111 132 C140 116, 168 124, 176 140 C156 150, 130 146, 111 132 Z" fill="#1f7a3a" />
+        <path d="M109 104 C80 86, 54 94, 46 112 C68 122, 92 118, 109 104 Z" fill="#2d8a4b" />
+        <path d="M111 76 C138 60, 162 66, 170 82 C152 92, 128 88, 111 76 Z" fill="#2d8a4b" />
+      </g>
+      <circle cx="128" cy="150" r="11" fill="#df2b18" />
+      <circle cx="144" cy="144" r="8" fill="#df2b18" />
+      <circle cx="94" cy="122" r="9.5" fill="#df2b18" />
+    </svg>
   </div>
 );
 
@@ -198,7 +173,7 @@ export const Hero: React.FC<HeroProps> = ({
     : ['Smarter Care.', 'Thriving Plants.'];
 
   return (
-    <section className="relative z-0 w-full bg-[#faf8f2] bg-botanical-veins text-[#13281c] overflow-hidden border-b border-[#cbdcd0]">
+    <section className="relative z-0 w-full bg-[#faf8f2] bg-botanical-veins text-[#13281c] overflow-visible border-b border-[#cbdcd0]">
       {/* Animated Sprouting Botanical Branches on Mobile & Laptop (Strictly Below Navbar) */}
       <BotanicalBranchesOverlay variant="hero" />
 
@@ -316,9 +291,9 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Seamless, Borderless Transparent Interactive 3D Tomato Plant Below Navbar */}
+          {/* Right Column: Seamless Interactive 3D Tomato Plant on Unified Background */}
           <div className="lg:col-span-7 relative z-0">
-            <div className="relative z-0 w-full h-[500px] sm:h-[560px] lg:h-[620px] bg-transparent overflow-hidden">
+            <div className="relative z-0 w-full h-[500px] sm:h-[560px] lg:h-[620px] bg-transparent overflow-visible">
               {/* Instant Botanical SVG Placeholder that fades cleanly once Frame 1 renders */}
               <div
                 aria-hidden="true"
@@ -326,7 +301,7 @@ export const Hero: React.FC<HeroProps> = ({
                   is3DReady ? 'opacity-0 pointer-events-none' : 'opacity-100'
                 }`}
               >
-                <BotanicalPlantSkeleton isUrdu={isUrdu} />
+                <BotanicalPlantSkeleton />
               </div>
 
               <div

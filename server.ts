@@ -56,7 +56,7 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 const DEFAULT_SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://agrovision-a.ai.studio/</loc>
+    <loc>https://agrovisionai.ai.studio/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -68,7 +68,7 @@ const DEFAULT_ROBOTS_TXT = `User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://agrovision-a.ai.studio/sitemap.xml
+Sitemap: https://agrovisionai.ai.studio/sitemap.xml
 `;
 
 function resolveStaticSeoFile(filename: string): string | null {
@@ -100,6 +100,38 @@ app.get(['/robots.txt', '/robots.txt/'], (_req, res) => {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=3600');
   res.send(txt);
+});
+
+// Self-unregistering cleanup routes so devices that previously installed the PWA automatically purge caches & SW
+app.get(['/sw.js', '/dev-sw.js'], (_req, res) => {
+  res.status(200);
+  res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.send(`
+self.addEventListener('install', () => { self.skipWaiting(); });
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    try {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    } catch {}
+    try {
+      await self.registration.unregister();
+    } catch {}
+    try {
+      const windowClients = await self.clients.matchAll({ type: 'window' });
+      windowClients.forEach((client) => {
+        try { client.navigate(client.url); } catch {}
+      });
+    } catch {}
+  })());
+});
+`);
+});
+
+app.get('/manifest.webmanifest', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.status(410).end();
 });
 
 // Health check
