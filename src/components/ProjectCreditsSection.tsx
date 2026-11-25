@@ -517,47 +517,53 @@ const HangingBotanicalCard: React.FC<HangingCardProps> = ({
 
             {/* BACK OF BOTANICAL ID CARD: Dark Botanical Green (#0e2b19) with Off-White Text (#f4f7f5) */}
             <div
-              className={`card-back bg-[#0e2b19] text-[#f4f7f5] p-5 flex flex-col justify-between border-2 border-[#1f5c37] shadow-xl ${
+              className={`card-back bg-[#0e2b19] text-[#f4f7f5] ${
+                member.isSupervisor ? 'p-5 justify-between' : 'p-4 justify-start gap-3'
+              } flex flex-col border-2 border-[#1f5c37] shadow-xl ${
                 isUrdu ? 'text-right' : 'text-left'
               }`}
             >
               <div>
                 <div className="border-b border-[#256d42] pb-2.5">
-                  <span className="text-[10px] uppercase tracking-widest text-[#86efac] font-bold">
+                  <span className="text-[10px] uppercase tracking-widest text-[#86efac] font-bold block">
                     {displayTag}
                   </span>
-                  <h3 className="font-display font-bold text-lg text-[#f4f7f5] leading-snug truncate">
+                  <h3 className="font-display font-bold text-base sm:text-lg text-[#f4f7f5] leading-snug truncate">
                     {displayName}
                   </h3>
                   <p className="text-xs text-[#bbf7d0] truncate">{displayRole}</p>
                 </div>
 
-                <div className="mt-2.5">
-                  <div className="text-[10px] uppercase tracking-wider font-semibold text-[#86efac]">
-                    {isUrdu ? 'شعبہ / مہارت' : 'Department / Specialty'}
+                {member.isSupervisor && (
+                  <div className="mt-2.5">
+                    <div className="text-[10px] uppercase tracking-wider font-semibold text-[#86efac]">
+                      {isUrdu ? 'شعبہ / مہارت' : 'Department / Specialty'}
+                    </div>
+                    <p className="text-xs font-medium text-[#f4f7f5]/90 mt-0.5 leading-snug">
+                      {displayDepartment}
+                    </p>
                   </div>
-                  <p className="text-xs font-medium text-[#f4f7f5]/90 mt-0.5 leading-snug">
-                    {displayDepartment}
-                  </p>
-                </div>
+                )}
 
-                <p className="mt-2.5 text-xs leading-relaxed text-[#f4f7f5]">
+                <p className={`${member.isSupervisor ? 'mt-2.5 text-xs' : 'mt-3 text-[12.5px]'} leading-relaxed text-[#f4f7f5]`}>
                   {displayBio}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#256d42]">
-                <p className="text-[10px] uppercase tracking-wider text-[#86efac] font-semibold mb-1.5">
-                  {isUrdu ? 'اہم ذمہ داریاں' : 'Key Contributions'}
-                </p>
-                <ul className="space-y-1">
-                  {displayFocus.map((area, idx) => (
-                    <li key={idx} className="text-[11px] text-[#f4f7f5] leading-snug">
-                      • {area}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {member.isSupervisor && (
+                <div className="pt-3 border-t border-[#256d42]">
+                  <p className="text-[10px] uppercase tracking-wider text-[#86efac] font-semibold mb-1.5">
+                    {isUrdu ? 'اہم ذمہ داریاں' : 'Key Contributions'}
+                  </p>
+                  <ul className="space-y-1">
+                    {displayFocus.map((area, idx) => (
+                      <li key={idx} className="text-[11px] text-[#f4f7f5] leading-snug">
+                        • {area}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
