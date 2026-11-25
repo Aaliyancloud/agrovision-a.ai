@@ -76,30 +76,30 @@ const TEAM_MEMBERS: TeamMember[] = [
     isSupervisor: false,
     name: 'Khalil-Ur-Rehman',
     urduName: 'خلیل الرحمٰن',
-    role: 'Team Lead & Lead Researcher',
-    urduRole: 'ٹیم لیڈ اور لیڈ ریسرچر',
-    department: 'Botanical AI & Leaf Pathology Research',
-    urduDepartment: 'نباتاتی اے آئی اور لیف پیتھالوجی ریسرچ',
+    role: 'Team Lead & Workflow Coordinator',
+    urduRole: 'ٹیم لیڈ اور ورک فلو کوآرڈینیٹر',
+    department: 'Team Leadership & Botanical Research',
+    urduDepartment: 'ٹیم لیڈرشپ اور نباتاتی تحقیق',
     tag: 'Team Lead',
     urduTag: 'ٹیم لیڈ',
     badgeText: 'Verified',
     urduBadgeText: 'تصدیق شدہ',
     leafVariant: 'monstera',
-    experience: 'Lead Researcher',
-    urduExperience: 'لیڈ ریسرچر',
+    experience: 'Team Leader',
+    urduExperience: 'ٹیم لیڈر',
     photo: khalilPhoto,
     photoFrameClass: 'scale-[1.15] origin-[50%_10%]',
-    bio: 'Leads leaf disease dataset research, plant pathology literature review, and defines model validation criteria for accurate leaf diagnostics.',
-    urduBio: 'پتے کی بیماریوں کے ڈیٹا سیٹ کی تحقیق، پلانٹ پیتھالوجی کے مطالعے، اور درست تشخیصی معیار کی قیادت۔',
+    bio: 'Leads the AgroVision team, manages daily workflow handling, monitors project milestones, and oversees leaf pathology research.',
+    urduBio: 'ایگرو وژن ٹیم کی قیادت، روزانہ کے ورک فلو، پروجیکٹ کی نگرانی اور پتے کی بیماریوں کی تحقیق کی سرپرستی۔',
     focusAreas: [
-      'Leaf Disease Research & Literature',
-      'Team Leadership & Workflow',
-      'AI Model Validation Criteria'
+      'Team Leadership & Workflow Handling',
+      'Progress Monitoring & Task Review',
+      'Leaf Pathology Research & Validation'
     ],
     urduFocusAreas: [
-      'پتے کی بیماریوں کی تحقیق و مطالعہ',
-      'ٹیم کی قیادت اور ورک فلو',
-      'اے آئی ماڈل کی تصدیق کا معیار'
+      'ٹیم لیڈرشپ اور ورک فلو مینجمنٹ',
+      'پروجیکٹ مانیٹرنگ اور معیار کا جائزہ',
+      'پتے کی بیماریوں کی تحقیق و تصدیق'
     ],
     initials: 'KR',
     swayDuration: 3.7,
@@ -122,17 +122,17 @@ const TEAM_MEMBERS: TeamMember[] = [
     experience: 'Web Architect',
     urduExperience: 'ویب آرکیٹیکٹ',
     photo: aaliyanPhoto,
-    bio: 'Architected and built the AgroVision web platform, seamless AI model integration, and interactive botanical user interface.',
-    urduBio: 'ایگرو وژن ویب پلیٹ فارم، اے آئی ماڈل کی انٹیگریشن اور انٹرایکٹو نباتاتی یوزر انٹرفیس کی مکمل تیاری۔',
+    bio: 'Architected and built the AgroVision web platform, interactive 3D tomato experience, and live AI scanner pipeline.',
+    urduBio: 'ایگرو وژن ویب پلیٹ فارم، 3D ٹماٹر کے پودے اور لائیو اے آئی اسکینر سسٹم کی مکمل ڈویلپمنٹ۔',
     focusAreas: [
-      'Full-Stack Web Engineering',
-      'UI/UX Design & Interactivity',
-      'AI Inference Pipeline Integration'
+      'Full-Stack Web & 3D Engineering',
+      'UI/UX Design & Responsiveness',
+      'AI Inference & Scanner Integration'
     ],
     urduFocusAreas: [
-      'فل اسٹیک ویب انجینئرنگ',
+      'فل اسٹیک ویب اور 3D انجینئرنگ',
       'UI/UX ڈیزائن اور انٹرایکٹیویٹی',
-      'اے آئی پائپ لائن انٹیگریشن'
+      'اے آئی اور لائیو اسکینر انٹیگریشن'
     ],
     initials: 'AA',
     swayDuration: 4.1,
@@ -143,29 +143,29 @@ const TEAM_MEMBERS: TeamMember[] = [
     isSupervisor: false,
     name: 'Ahmed Ali',
     urduName: 'احمد علی',
-    role: 'QA & Model Testing Specialist',
-    urduRole: 'کوالٹی ایشورنس اور ٹیسٹنگ اسپیشلسٹ',
-    department: 'Accuracy Benchmarking & Validation',
-    urduDepartment: 'درستگی کی جانچ اور توثیق',
+    role: 'QA & Live Scanner Tester',
+    urduRole: 'کوالٹی ایشورنس اور لائیو اسکینر ٹیسٹر',
+    department: 'Live Scanner & Accuracy Testing',
+    urduDepartment: 'لائیو اسکینر اور درستگی کی جانچ',
     tag: 'QA & Testing',
     urduTag: 'ٹیسٹنگ و معیار',
     badgeText: 'Verified',
     urduBadgeText: 'تصدیق شدہ',
     leafVariant: 'maple',
-    experience: 'QA Specialist',
-    urduExperience: 'QA اسپیشلسٹ',
+    experience: 'QA Tester',
+    urduExperience: 'کیو اے ٹیسٹر',
     photo: ahmedPhoto,
-    bio: 'Conducts rigorous accuracy testing, edge-case leaf image validation, and cross-device quality assurance across the web application.',
-    urduBio: 'ویب ایپلیکیشن پر درستگی کی سخت جانچ، مشکل تصاویر کی تصدیق اور مختلف ڈیوائسز پر کوالٹی ایشورنس۔',
+    bio: 'Tests the live leaf scanner across real tomato samples, blurry edge cases, and multiple devices to ensure reliable accuracy.',
+    urduBio: 'اصل پتوں، دھندلی تصاویر اور مختلف ڈیوائسز پر لائیو اسکینر کی مسلسل ٹیسٹنگ اور درستگی کی تصدیق۔',
     focusAreas: [
-      'Model Accuracy & Edge-Case Testing',
-      'Cross-Device UI Quality Assurance',
-      'Diagnostic Reliability Audits'
+      'Live Leaf Scanner Testing',
+      'Edge-Case & Accuracy Validation',
+      'Cross-Device QA & Bug Checks'
     ],
     urduFocusAreas: [
-      'ماڈل کی درستگی اور ایج کیس ٹیسٹنگ',
-      'کراس ڈیوائس UI کوالٹی ایشورنس',
-      'تشخیصی اعتماد کا آڈٹ'
+      'لائیو لیف اسکینر ٹیسٹنگ',
+      'ایج کیس اور درستگی کی جانچ',
+      'مختلف ڈیوائسز پر کوالٹی چیک'
     ],
     initials: 'AA',
     swayDuration: 4.7,
@@ -177,28 +177,28 @@ const TEAM_MEMBERS: TeamMember[] = [
     name: 'Agha Bilal Khan',
     urduName: 'آغا بلال خان',
     role: 'Co-Researcher & Dataset Curator',
-    urduRole: 'شریک ریسرچر اور ڈیٹا سیٹ کیوریٹر',
-    department: 'Botanical Taxonomy & Image Labeling',
-    urduDepartment: 'نباتاتی درجہ بندی اور امیج لیبلنگ',
-    tag: 'Co-Researcher',
-    urduTag: 'شریک ریسرچر',
+    urduRole: 'چوتھے ریسرچر اور ڈیٹا سیٹ کیوریٹر',
+    department: 'Botanical Research & Image Labeling',
+    urduDepartment: 'نباتاتی تحقیق اور امیج لیبلنگ',
+    tag: 'Researcher',
+    urduTag: 'ریسرچر',
     badgeText: 'Verified',
     urduBadgeText: 'تصدیق شدہ',
     leafVariant: 'ginkgo',
-    experience: 'Co-Researcher',
-    urduExperience: 'شریک ریسرچر',
+    experience: 'Researcher',
+    urduExperience: 'ریسرچر',
     photo: bilalPhoto,
-    bio: 'Curates, labels, and organizes high-resolution leaf image datasets across healthy and diseased categories for training the AgroVision AI.',
-    urduBio: 'صحت مند اور بیمار پتوں کی اعلیٰ معیار کی تصاویر کا مجموعہ، لیبلنگ اور ڈیٹا سیٹ کی ترتیب۔',
+    bio: 'Researches tomato leaf diseases and curates labeled healthy and blighted image datasets used to verify AgroVision AI.',
+    urduBio: 'ٹماٹر کے پتوں کی بیماریوں پر تحقیق اور اے آئی کی تصدیق کے لیے صحت مند و بیمار تصاویر کے ڈیٹا کی تیاری۔',
     focusAreas: [
+      'Botanical Disease Co-Research',
       'Leaf Dataset Curation & Labeling',
-      'Botanical Species Classification',
-      'Training Data Preprocessing'
+      'Sample Verification & Sorting'
     ],
     urduFocusAreas: [
+      'نباتاتی بیماریوں پر مشترکہ تحقیق',
       'پتوں کے ڈیٹا سیٹ کی ترتیب و لیبلنگ',
-      'نباتاتی اقسام کی درجہ بندی',
-      'ٹریننگ ڈیٹا کی ابتدائی تیاری'
+      'نمونوں کی جانچ اور درجہ بندی'
     ],
     initials: 'BK',
     swayDuration: 3.9,
@@ -221,16 +221,16 @@ const TEAM_MEMBERS: TeamMember[] = [
     experience: 'Content Lead',
     urduExperience: 'کنٹینٹ لیڈ',
     photo: syedHajanPhoto,
-    bio: 'Manages technical documentation, project reports, presentation decks, and clear research synthesis for AgroVision.',
-    urduBio: 'ایگرو وژن کے لیے تکنیکی دستاویزات، پروجیکٹ رپورٹس، پریزنٹیشن اور واضح تحقیقی خلاصے کی تیاری۔',
+    bio: 'Prepares technical documentation, exhibition reports, and clear bilingual explanations for the AgroVision platform.',
+    urduBio: 'ایگرو وژن پلیٹ فارم کے لیے تکنیکی دستاویزات، نمائشی رپورٹس اور دو لسانی مواد کی ترتیب۔',
     focusAreas: [
       'Technical Documentation & Reports',
-      'Research Synthesis & Whitepapers',
+      'Research Synthesis & Guides',
       'Presentation & Content Strategy'
     ],
     urduFocusAreas: [
       'تکنیکی دستاویزات اور رپورٹس',
-      'تحقیقی خلاصہ اور وائٹ پیپرز',
+      'تحقیقی خلاصہ اور رہنما مواد',
       'پریزنٹیشن اور مواد کی حکمت عملی'
     ],
     initials: 'SH',
@@ -518,20 +518,24 @@ const HangingBotanicalCard: React.FC<HangingCardProps> = ({
             {/* BACK OF BOTANICAL ID CARD: Dark Botanical Green (#0e2b19) with Off-White Text (#f4f7f5) */}
             <div
               className={`card-back bg-[#0e2b19] text-[#f4f7f5] ${
-                member.isSupervisor ? 'p-5 justify-between' : 'p-4 justify-start gap-3'
-              } flex flex-col border-2 border-[#1f5c37] shadow-xl ${
+                member.isSupervisor ? 'p-5' : 'p-3.5'
+              } flex flex-col justify-between overflow-y-auto border-2 border-[#1f5c37] shadow-xl ${
                 isUrdu ? 'text-right' : 'text-left'
               }`}
             >
               <div>
-                <div className="border-b border-[#256d42] pb-2.5">
-                  <span className="text-[10px] uppercase tracking-widest text-[#86efac] font-bold block">
+                <div className={`border-b border-[#256d42] ${member.isSupervisor ? 'pb-2.5' : 'pb-1.5'}`}>
+                  <span className="text-[9.5px] uppercase tracking-widest text-[#86efac] font-bold block leading-tight">
                     {displayTag}
                   </span>
-                  <h3 className="font-display font-bold text-base sm:text-lg text-[#f4f7f5] leading-snug truncate">
+                  <h3
+                    className={`font-display font-bold ${
+                      member.isSupervisor ? 'text-base sm:text-lg' : 'text-[15px]'
+                    } text-[#f4f7f5] leading-snug truncate`}
+                  >
                     {displayName}
                   </h3>
-                  <p className="text-xs text-[#bbf7d0] truncate">{displayRole}</p>
+                  <p className="text-[11px] text-[#bbf7d0] truncate leading-tight">{displayRole}</p>
                 </div>
 
                 {member.isSupervisor && (
@@ -545,25 +549,36 @@ const HangingBotanicalCard: React.FC<HangingCardProps> = ({
                   </div>
                 )}
 
-                <p className={`${member.isSupervisor ? 'mt-2.5 text-xs' : 'mt-3 text-[12.5px]'} leading-relaxed text-[#f4f7f5]`}>
+                <p
+                  className={`${
+                    member.isSupervisor ? 'mt-2.5 text-xs leading-relaxed' : 'mt-2 text-[11.5px] leading-[1.42]'
+                  } text-[#f4f7f5]`}
+                >
                   {displayBio}
                 </p>
               </div>
 
-              {member.isSupervisor && (
-                <div className="pt-3 border-t border-[#256d42]">
-                  <p className="text-[10px] uppercase tracking-wider text-[#86efac] font-semibold mb-1.5">
-                    {isUrdu ? 'اہم ذمہ داریاں' : 'Key Contributions'}
-                  </p>
-                  <ul className="space-y-1">
-                    {displayFocus.map((area, idx) => (
-                      <li key={idx} className="text-[11px] text-[#f4f7f5] leading-snug">
-                        • {area}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <div className={`${member.isSupervisor ? 'pt-3' : 'pt-2 mt-1.5'} border-t border-[#256d42]`}>
+                <p
+                  className={`${
+                    member.isSupervisor ? 'text-[10px] mb-1.5' : 'text-[9.5px] mb-1'
+                  } uppercase tracking-wider text-[#86efac] font-semibold`}
+                >
+                  {isUrdu ? 'اہم ذمہ داریاں' : 'Key Contributions'}
+                </p>
+                <ul className="space-y-1">
+                  {displayFocus.map((area, idx) => (
+                    <li
+                      key={idx}
+                      className={`${
+                        member.isSupervisor ? 'text-[11px]' : 'text-[10.5px]'
+                      } text-[#f4f7f5] leading-tight`}
+                    >
+                      • {area}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
