@@ -108,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onScanClick }) => {
           </div>
 
           <a
-            href="https://agrovisionai.ai.studio"
+            href="https://agrovision-ai-app-delta.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 text-xs font-semibold text-[#14532d] bg-[#edf5ef] hover:bg-[#dcebe0] border border-[#cbdcd0] rounded-xl transition-all shrink-0 whitespace-nowrap"
@@ -203,7 +203,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onScanClick }) => {
               <span>{t.nav.checkLeafBtn}</span>
             </button>
             <a
-              href="https://agrovisionai.ai.studio"
+              href="https://agrovision-ai-app-delta.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
