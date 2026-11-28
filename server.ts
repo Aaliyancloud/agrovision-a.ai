@@ -102,6 +102,16 @@ app.get(['/robots.txt', '/robots.txt/'], (_req, res) => {
   res.send(txt);
 });
 
+const DEFAULT_GOOGLE_VERIFICATION = 'google-site-verification: google16a85b744f0758a9.html';
+
+app.get(['/google16a85b744f0758a9.html', '/google16a85b744f0758a9.html/'], (_req, res) => {
+  const html = resolveStaticSeoFile('google16a85b744f0758a9.html') ?? DEFAULT_GOOGLE_VERIFICATION;
+  res.status(200);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.send(html);
+});
+
 // Self-unregistering cleanup routes so devices that previously installed the PWA automatically purge caches & SW
 app.get(['/sw.js', '/dev-sw.js'], (_req, res) => {
   res.status(200);
