@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Camera, ShieldCheck, Lock, ScanLine, UploadCloud, X, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -31,7 +32,7 @@ export const CameraPermissionModal: React.FC<CameraPermissionModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const reasons = [
     {
@@ -57,18 +58,20 @@ export const CameraPermissionModal: React.FC<CameraPermissionModalProps> = ({
     }
   ];
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#13281c]/65 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 overflow-y-auto overscroll-contain bg-[#13281c]/65 backdrop-blur-md"
+      style={{ zIndex: 9990 }}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="camera-permission-title"
     >
-      <div
-        className="relative w-full max-w-xl bg-[#faf8f2] border border-[#cbdcd0] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-200"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex min-h-full w-full items-center justify-center px-3 sm:px-6 pt-20 sm:pt-24 pb-4 sm:pb-6">
+        <div
+          className="relative w-full max-w-xl my-auto bg-[#faf8f2] border border-[#cbdcd0] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-6.25rem)] sm:max-h-[calc(100dvh-7.5rem)]"
+          onClick={(e) => e.stopPropagation()}
+        >
         {/* Top Visual Botanical Viewfinder Banner */}
         <div className="relative bg-gradient-to-br from-[#13281c] via-[#173524] to-[#0f2418] px-6 pt-6 pb-5 text-white overflow-hidden">
           {/* Subtle botanical grid pattern */}
@@ -219,7 +222,9 @@ export const CameraPermissionModal: React.FC<CameraPermissionModalProps> = ({
             <span>{isUrdu ? 'کیمرے کی اجازت دیں' : 'Allow Camera Access'}</span>
           </button>
         </div>
+        </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

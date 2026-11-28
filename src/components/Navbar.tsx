@@ -160,7 +160,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onScanClick }) => {
 
       {/* Responsive Drawer Menu (< 1280px) */}
       {mobileMenuOpen && (
-        <div className="xl:hidden w-full border-b border-[#cbdcd0] bg-[#faf8f2] px-5 sm:px-8 py-5 flex flex-col gap-4 text-sm animate-in fade-in slide-in-from-top-2 duration-200 shadow-xl max-h-[85vh] overflow-y-auto">
+        <div className="xl:hidden w-full border-b border-[#cbdcd0] bg-[#faf8f2] px-5 sm:px-8 py-5 flex flex-col gap-4 text-sm shadow-xl max-h-[calc(100dvh-4.5rem)] overflow-y-auto">
           <div className="p-3.5 rounded-2xl bg-white border border-[#cbdcd0] flex items-center justify-between gap-3">
             <span className="text-xs font-bold text-[#13281c] flex items-center gap-2">
               <Globe className="w-4 h-4 text-[#166534]" />

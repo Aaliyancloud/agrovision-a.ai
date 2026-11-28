@@ -26,7 +26,8 @@ import {
   Droplets,
   FlaskConical,
   SlidersHorizontal,
-  Download
+  FileImage,
+  FileText
 } from 'lucide-react';
 import { DiagnosisResult, SampleLeaf } from '../types/disease';
 import { STEAM_EXHIBITION_SAMPLES } from '../data/tomatoDiseases';
@@ -34,6 +35,10 @@ import { analyzeLeafImage, computeSensorInsights } from '../services/diseaseClas
 import { useLanguage } from '../context/LanguageContext';
 import { useSensors } from '../context/SensorContext';
 import { PrintableDiagnosticReport } from './PrintableDiagnosticReport';
+import {
+  downloadDiagnosticReportPng,
+  downloadDiagnosticReportScreenshot
+} from '../utils/reportExport';
 
 const VideoTutorialModal = lazy(() =>
   import('./VideoTutorialModal').then((m) => ({ default: m.VideoTutorialModal }))
@@ -92,6 +97,9 @@ export const DiagnosticStudio: React.FC<DiagnosticStudioProps> = ({
   const [isAudioLoading, setIsAudioLoading] = useState<boolean>(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState<boolean>(false);
+  const [isExportingScreenshot, setIsExportingScreenshot] = useState<boolean>(false);
+  const [isExportingPng, setIsExportingPng] = useState<boolean>(false);
+  const [exportFeedback, setExportFeedback] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -451,11 +459,18 @@ export const DiagnosticStudio: React.FC<DiagnosticStudioProps> = ({
     onExternalActionHandled?.();
   }, [externalAction?.nonce]);
 
-  const handlePrint = () => {
+  const showTemporaryExportFeedback = (message: string) => {
+    setExportFeedback(message);
+    window.setTimeout(() => {
+      setExportFeedback((prev) => (prev === message ? null : prev));
+    }, 3200);
+  };
+
+  const handleOpenPrintPreview = () => {
     setIsPrintModalOpen(true);
   };
 
-  const handleDownloadReport = () => {
+  const handlePrintDirect = () => {
     if (!diagnosticResult || typeof window === 'undefined') return;
     const previousTitle = document.title;
     document.title = `AgroVision-AI-${diagnosticResult.diseaseId}-Diagnosis-Report`;
@@ -470,6 +485,36 @@ export const DiagnosticStudio: React.FC<DiagnosticStudioProps> = ({
       // Fallback title restoration if afterprint does not fire in sandboxed browsers
       window.setTimeout(restoreTitle, 1500);
     });
+  };
+
+  const handleScreenshotReport = async () => {
+    if (!diagnosticResult || isExportingScreenshot) return;
+    try {
+      setIsExportingScreenshot(true);
+      await downloadDiagnosticReportScreenshot(diagnosticResult, isUrdu);
+      showTemporaryExportFeedback(
+        isUrdu ? 'اسکرین شاٹ رپورٹ محفوظ ہو گئی!' : 'Screenshot report saved as PNG!'
+      );
+    } catch (err) {
+      console.warn('Screenshot export failed:', err);
+    } finally {
+      setIsExportingScreenshot(false);
+    }
+  };
+
+  const handleDownloadPng = async () => {
+    if (!diagnosticResult || isExportingPng) return;
+    try {
+      setIsExportingPng(true);
+      await downloadDiagnosticReportPng(diagnosticResult, isUrdu);
+      showTemporaryExportFeedback(
+        isUrdu ? 'پی این جی رپورٹ ڈاؤنلوڈ ہو گئی!' : 'Diagnostic PNG report downloaded!'
+      );
+    } catch (err) {
+      console.warn('PNG export failed:', err);
+    } finally {
+      setIsExportingPng(false);
+    }
   };
 
   const getUrduDiseaseName = (id: string, def: string) => {
@@ -1481,48 +1526,86 @@ export const DiagnosticStudio: React.FC<DiagnosticStudioProps> = ({
                   </div>
 
                   {/* Bottom Action Buttons */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <button
-                        type="button"
-                        onClick={handleDownloadReport}
-                        className="px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-semibold transition-all flex items-center gap-2 shadow-sm active:scale-95 cursor-pointer"
-                      >
-                        <Download className="w-3.5 h-3.5 text-[#bbf7d0]" />
-                        <span>{isUrdu ? 'رپورٹ ڈاؤنلوڈ کریں' : 'Download Report'}</span>
-                      </button>
+                  <div className="space-y-3 pt-2">
+                    {exportFeedback && (
+                      <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-300 text-xs font-semibold text-emerald-900">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>{exportFeedback}</span>
+                      </div>
+                    )}
+
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <button
+                          type="button"
+                          onClick={handleScreenshotReport}
+                          disabled={isExportingScreenshot}
+                          className="px-4 py-2 rounded-xl bg-[#166534] hover:bg-[#14532d] text-white text-xs font-semibold transition-all flex items-center gap-2 shadow-sm active:scale-95 disabled:opacity-60 cursor-pointer"
+                        >
+                          {isExportingScreenshot ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-[#bbf7d0]" />
+                          ) : (
+                            <Camera className="w-3.5 h-3.5 text-[#bbf7d0]" />
+                          )}
+                          <span>{isUrdu ? 'اسکرین شاٹ رپورٹ' : 'Screenshot Report'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleDownloadPng}
+                          disabled={isExportingPng}
+                          className="px-4 py-2 rounded-xl bg-[#edf5ef] hover:bg-emerald-100 border border-emerald-300 text-emerald-950 text-xs font-semibold transition-all flex items-center gap-2 shadow-xs active:scale-95 disabled:opacity-60 cursor-pointer"
+                        >
+                          {isExportingPng ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-700" />
+                          ) : (
+                            <FileImage className="w-3.5 h-3.5 text-emerald-700" />
+                          )}
+                          <span>{isUrdu ? 'پی این جی ڈاؤنلوڈ کریں' : 'Download PNG'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handlePrintDirect}
+                          className="px-4 py-2 rounded-xl bg-white border border-[#cbdcd0] hover:bg-[#edf5ef] text-xs font-semibold text-[#13281c] transition-all flex items-center gap-2 shadow-xs active:scale-95 cursor-pointer"
+                        >
+                          <Printer className="w-3.5 h-3.5 text-emerald-800" />
+                          <span>{isUrdu ? 'پرنٹ کریں' : 'Print'}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleOpenPrintPreview}
+                          className="px-3.5 py-2 rounded-xl border border-[#cbdcd0] hover:bg-[#edf5ef] text-xs font-medium text-[#3d5947] hover:text-[#13281c] transition-all flex items-center gap-1.5 cursor-pointer"
+                          title={isUrdu ? 'سرٹیفکیٹ کارڈ دیکھیں' : 'Preview 1-Page Certificate Card'}
+                        >
+                          <FileText className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>{isUrdu ? 'سرٹیفکیٹ کارڈ' : 'Certificate Preview'}</span>
+                        </button>
+
+                        {/* Google Chat Outbreak Alert Button */}
+                        <button
+                          type="button"
+                          onClick={() => setIsChatModalOpen(true)}
+                          className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-xs font-bold text-emerald-950 transition-all flex items-center gap-2 shadow-xs active:scale-95 cursor-pointer"
+                          title={isUrdu ? 'گوگل چیٹ پر رپورٹ بھیجیں' : 'Send Alert to Google Chat Space'}
+                        >
+                          <MessageSquare className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>{isUrdu ? 'گوگل چیٹ پر بھیجیں' : 'Share to Google Chat'}</span>
+                        </button>
+                      </div>
 
                       <button
                         type="button"
-                        onClick={handlePrint}
-                        className="px-4 py-2 rounded-xl border border-[#cbdcd0] hover:bg-[#edf5ef] text-xs font-medium text-[#13281c] transition-all flex items-center gap-2 cursor-pointer"
+                        onClick={() => {
+                          setActiveInputTab('samples');
+                        }}
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-all flex items-center gap-2 shadow-sm cursor-pointer"
                       >
-                        <Printer className="w-3.5 h-3.5 text-emerald-800" />
-                        <span>{t.scanner.printReportBtn}</span>
-                      </button>
-
-                      {/* Google Chat Outbreak Alert Button */}
-                      <button
-                        type="button"
-                        onClick={() => setIsChatModalOpen(true)}
-                        className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-xs font-bold text-emerald-950 transition-all flex items-center gap-2 shadow-xs active:scale-95 cursor-pointer"
-                        title={isUrdu ? 'گوگل چیٹ پر رپورٹ بھیجیں' : 'Send Alert to Google Chat Space'}
-                      >
-                        <MessageSquare className="w-3.5 h-3.5 text-emerald-700" />
-                        <span>{isUrdu ? 'گوگل چیٹ پر بھیجیں' : 'Share to Google Chat'}</span>
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        <span>{t.scanner.testAnotherBtn}</span>
                       </button>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActiveInputTab('samples');
-                      }}
-                      className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-all flex items-center gap-2 shadow-sm cursor-pointer"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      <span>{t.scanner.testAnotherBtn}</span>
-                    </button>
                   </div>
                 </div>
               </div>

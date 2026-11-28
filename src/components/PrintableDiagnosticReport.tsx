@@ -34,14 +34,13 @@ export const PrintableDiagnosticReport: React.FC<PrintableDiagnosticReportProps>
 
   if (!portalElement) return null;
 
-  const formattedDate = new Date(result.analysisTimestamp || Date.now()).toLocaleDateString(
-    isUrdu ? 'ur-PK' : 'en-US',
-    {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }
-  );
+  const parsedDate = result.analysisTimestamp ? new Date(result.analysisTimestamp) : new Date();
+  const safeDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+  const formattedDate = safeDate.toLocaleDateString(isUrdu ? 'ur-PK' : 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
   const reportMarkup = (
     <article

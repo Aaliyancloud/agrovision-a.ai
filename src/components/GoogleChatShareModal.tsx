@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   MessageSquare,
   X,
@@ -50,20 +51,31 @@ export const GoogleChatShareModal: React.FC<GoogleChatShareModalProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showConfirmStep, setShowConfirmStep] = useState(false);
 
-  // Check initial token
+  // Check initial token + lock body scroll + escape handler
   useEffect(() => {
-    if (isOpen) {
-      setSendSuccess(false);
-      setErrorMessage(null);
-      setShowConfirmStep(false);
-      getAccessToken().then((token) => {
-        if (token) {
-          setUserToken(token);
-          loadSpaces(token);
-        }
-      });
-    }
-  }, [isOpen]);
+    if (!isOpen) return;
+    setSendSuccess(false);
+    setErrorMessage(null);
+    setShowConfirmStep(false);
+    getAccessToken().then((token) => {
+      if (token) {
+        setUserToken(token);
+        loadSpaces(token);
+      }
+    });
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    const prevOverflow = document.body.style.overflow;
+    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isOpen, onClose]);
 
   const loadSpaces = async (token: string) => {
     setIsLoadingSpaces(true);
@@ -166,43 +178,58 @@ export const GoogleChatShareModal: React.FC<GoogleChatShareModalProps> = ({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl bg-[#faf8f2] rounded-3xl border border-[#cbdcd0] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-        {/* Header */}
-        <div className="px-6 py-4 bg-white border-b border-[#cbdcd0] flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-              <MessageSquare className="w-5 h-5 text-emerald-700" />
+  return createPortal(
+    <div
+      className="fixed inset-0 overflow-y-auto overscroll-contain bg-black/70 backdrop-blur-sm"
+      style={{ zIndex: 9990 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="google-chat-modal-title"
+    >
+      <div className="flex min-h-full w-full items-center justify-center px-3 sm:px-6 pt-20 sm:pt-24 pb-4 sm:pb-6">
+        <div
+          className="relative w-full max-w-xl my-auto bg-[#faf8f2] rounded-3xl border border-[#cbdcd0] shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-6.25rem)] sm:max-h-[calc(100dvh-7.5rem)]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="shrink-0 px-5 sm:px-6 py-4 bg-white border-b border-[#cbdcd0] flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                <MessageSquare className="w-5 h-5 text-emerald-700" />
+              </div>
+              <div className="min-w-0">
+                <h3
+                  id="google-chat-modal-title"
+                  className="font-display font-bold text-base text-[#13281c] flex items-center gap-2 flex-wrap"
+                >
+                  <span>{isUrdu ? 'گوگل چیٹ پر رپورٹ بھیجیں' : 'Send to Google Chat'}</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold">
+                    Workspace
+                  </span>
+                </h3>
+                <p className="text-xs text-[#3d5947] truncate">
+                  {isUrdu
+                    ? 'بیماری کی فوری الرٹ ٹیم یا زرعی ماہرین کے اسپیس پر شیئر کریں'
+                    : 'Dispatch verified pathology alert directly to your team space'}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-display font-bold text-base text-[#13281c] flex items-center gap-2">
-                <span>{isUrdu ? 'گوگل چیٹ پر رپورٹ بھیجیں' : 'Send to Google Chat'}</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold">
-                  Workspace
-                </span>
-              </h3>
-              <p className="text-xs text-[#3d5947]">
-                {isUrdu
-                  ? 'بیماری کی فوری الرٹ ٹیم یا زرعی ماہرین کے اسپیس پر شیئر کریں'
-                  : 'Dispatch verified pathology alert directly to your team space'}
-              </p>
-            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 rounded-xl hover:bg-[#edf5ef] text-[#3d5947] hover:text-[#13281c] transition-colors shrink-0 cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-xl hover:bg-[#edf5ef] text-[#3d5947] hover:text-[#13281c] transition-colors"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-5 text-xs text-[#3d5947]">
+          {/* Modal Body */}
+          <div className="min-h-0 flex-1 p-5 sm:p-6 overflow-y-auto space-y-5 text-xs text-[#3d5947]">
           {/* Success Banner */}
           {sendSuccess ? (
             <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-300 text-center space-y-3">
@@ -471,8 +498,10 @@ export const GoogleChatShareModal: React.FC<GoogleChatShareModalProps> = ({
               )}
             </>
           )}
+          </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

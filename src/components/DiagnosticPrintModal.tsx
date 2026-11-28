@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Printer,
@@ -8,11 +8,15 @@ import {
   Leaf,
   CheckCircle2,
   Sparkles,
-  Download,
-  FileImage
+  FileImage,
+  Camera
 } from 'lucide-react';
 import { DiagnosisResult } from '../types/disease';
 import { useLanguage } from '../context/LanguageContext';
+import {
+  downloadDiagnosticReportPng,
+  downloadDiagnosticReportScreenshot
+} from '../utils/reportExport';
 
 interface DiagnosticPrintModalProps {
   isOpen: boolean;
@@ -29,6 +33,7 @@ export const DiagnosticPrintModal: React.FC<DiagnosticPrintModalProps> = ({
   const printContentRef = useRef<HTMLDivElement>(null);
   const [portalElement, setPortalElement] = useState<HTMLElement | null>(null);
   const [isExportingImage, setIsExportingImage] = useState(false);
+  const [isExportingScreenshot, setIsExportingScreenshot] = useState(false);
 
   // Setup dedicated print portal node directly on document.body for 1-page print guarantee
   useEffect(() => {
@@ -41,16 +46,33 @@ export const DiagnosticPrintModal: React.FC<DiagnosticPrintModalProps> = ({
     setPortalElement(portalNode);
 
     return () => {
-      // Cleanup portal content on unmount
       if (portalNode) {
         portalNode.innerHTML = '';
       }
     };
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    const prevOverflow = document.body.style.overflow;
+    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isOpen, onClose]);
+
+  const certificateId = useMemo(
+    () => `AV-${result.diseaseId.toUpperCase().slice(0, 4)}-${result.id.slice(-6).toUpperCase()}`,
+    [result.diseaseId, result.id]
+  );
+
   if (!isOpen) return null;
 
-  const certificateId = `AV-${result.diseaseId.toUpperCase().slice(0, 4)}-${Math.floor(100000 + Math.random() * 900000)}`;
   const currentDate = new Date().toLocaleDateString(isUrdu ? 'ur-PK' : 'en-US', {
     year: 'numeric',
     month: 'long',
@@ -61,182 +83,25 @@ export const DiagnosticPrintModal: React.FC<DiagnosticPrintModalProps> = ({
     window.print();
   };
 
-  /**
-   * Export as 1 Single Picture / Image (PNG)
-   * Guaranteed to be strictly 1 single high-resolution image file!
-   */
   const handleDownloadSinglePicture = async () => {
     try {
       setIsExportingImage(true);
-      const canvas = document.createElement('canvas');
-      const width = 1200;
-      const height = 1600;
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-
-      // 1. Background Cream Surface
-      ctx.fillStyle = '#faf8f2';
-      ctx.fillRect(0, 0, width, height);
-
-      // Inner white card
-      ctx.fillStyle = '#ffffff';
-      ctx.roundRect(40, 40, width - 80, height - 80, 24);
-      ctx.fill();
-
-      // Double Emerald Border
-      ctx.strokeStyle = '#059669';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(48, 48, width - 96, height - 96);
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(56, 56, width - 112, height - 112);
-
-      // Header Banner
-      ctx.fillStyle = '#047857';
-      ctx.font = 'bold 20px monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('AGROVISION AI · PLANT PATHOLOGY DIAGNOSTIC REPORT', width / 2, 110);
-
-      ctx.fillStyle = '#13281c';
-      ctx.font = 'bold 38px sans-serif';
-      ctx.fillText(
-        isUrdu ? 'نباتاتی تشخیصی و فیلڈ ایڈوائزری رپورٹ' : 'Plant Pathology Diagnostic & Advisory Report',
-        width / 2,
-        170
-      );
-
-      ctx.fillStyle = '#3d5947';
-      ctx.font = '18px sans-serif';
-      ctx.fillText('Solanum lycopersicum Computer Vision Pathology Analysis & Field Treatment Protocol', width / 2, 210);
-
-      // Metadata Bar
-      ctx.fillStyle = '#edf5ef';
-      ctx.roundRect(80, 240, width - 160, 50, 12);
-      ctx.fill();
-
-      ctx.fillStyle = '#065f46';
-      ctx.font = 'bold 16px monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`Certificate: ${certificateId}`, 110, 272);
-      ctx.fillText(`Date: ${currentDate}`, 520, 272);
-      ctx.fillText(`Crop: Solanum lycopersicum (Tomato)`, 820, 272);
-
-      // Condition Identified Box
-      ctx.fillStyle = '#faf8f2';
-      ctx.roundRect(80, 320, width - 160, 240, 16);
-      ctx.fill();
-      ctx.strokeStyle = '#cbdcd0';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      ctx.fillStyle = '#059669';
-      ctx.font = 'bold 16px monospace';
-      ctx.fillText('PATHOLOGY FINDING:', 110, 360);
-
-      ctx.fillStyle = '#13281c';
-      ctx.font = 'bold 36px sans-serif';
-      ctx.fillText(result.diseaseName, 110, 410);
-
-      ctx.fillStyle = '#3d5947';
-      ctx.font = 'italic 20px sans-serif';
-      ctx.fillText(`Pathogen: ${result.scientificName} (${result.pathogenType})`, 110, 445);
-
-      ctx.fillStyle = '#13281c';
-      ctx.font = '17px sans-serif';
-      ctx.fillText(`Certainty: ${result.confidence}%  |  Severity: ${result.severity}  |  Host: Lycopersicon`, 110, 485);
-
-      // Advisory Summary Box
-      ctx.fillStyle = '#edf5ef';
-      ctx.roundRect(80, 590, width - 160, 140, 16);
-      ctx.fill();
-
-      ctx.fillStyle = '#065f46';
-      ctx.font = 'bold 16px sans-serif';
-      ctx.fillText('Field Advisory Summary:', 110, 625);
-
-      ctx.fillStyle = '#13281c';
-      ctx.font = '16px sans-serif';
-      const summaryText = result.summary.slice(0, 180) + '...';
-      ctx.fillText(summaryText, 110, 660);
-
-      // 7-Day Protocol
-      ctx.fillStyle = '#13281c';
-      ctx.font = 'bold 22px sans-serif';
-      ctx.fillText('7-Day Structured Recovery Schedule', 110, 780);
-
-      // Day 1
-      ctx.fillStyle = '#ffffff';
-      ctx.roundRect(80, 810, 320, 220, 12);
-      ctx.fill();
-      ctx.strokeStyle = '#059669';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = '#059669';
-      ctx.font = 'bold 16px monospace';
-      ctx.fillText('DAY 01 · IMMEDIATE', 100, 845);
-      ctx.fillStyle = '#13281c';
-      ctx.font = 'bold 18px sans-serif';
-      ctx.fillText('Targeted Organic Spray', 100, 880);
-      ctx.fillStyle = '#3d5947';
-      ctx.font = '14px sans-serif';
-      ctx.fillText('Neem oil extract or organic', 100, 920);
-      ctx.fillText('copper soap at dawn.', 100, 945);
-
-      // Day 3
-      ctx.fillStyle = '#ffffff';
-      ctx.roundRect(440, 810, 320, 220, 12);
-      ctx.fill();
-      ctx.strokeStyle = '#d97706';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = '#d97706';
-      ctx.font = 'bold 16px monospace';
-      ctx.fillText('DAY 03 · SANITATION', 460, 845);
-      ctx.fillStyle = '#13281c';
-      ctx.font = 'bold 18px sans-serif';
-      ctx.fillText('Pruning & Aeration', 460, 880);
-      ctx.fillStyle = '#3d5947';
-      ctx.font = '14px sans-serif';
-      ctx.fillText('Prune infected lower foliage', 460, 920);
-      ctx.fillText('and dispose far from crop.', 460, 945);
-
-      // Day 7
-      ctx.fillStyle = '#ffffff';
-      ctx.roundRect(800, 810, 320, 220, 12);
-      ctx.fill();
-      ctx.strokeStyle = '#059669';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = '#059669';
-      ctx.font = 'bold 16px monospace';
-      ctx.fillText('DAY 07 · VERIFY', 820, 845);
-      ctx.fillStyle = '#13281c';
-      ctx.font = 'bold 18px sans-serif';
-      ctx.fillText('Regeneration Check', 820, 880);
-      ctx.fillStyle = '#3d5947';
-      ctx.font = '14px sans-serif';
-      ctx.fillText('Inspect terminal shoots for', 820, 920);
-      ctx.fillText('vigorous emerald growth.', 820, 945);
-
-      // Citation & Verification Seal
-      ctx.fillStyle = '#047857';
-      ctx.font = '14px sans-serif';
-      ctx.fillText('Penn State & EPFL PlantVillage Benchmark · 89.2% Field Accuracy Protocol', 110, 1100);
-      ctx.fillStyle = '#6b7280';
-      ctx.font = '12px sans-serif';
-      ctx.fillText('AgroVision AI Educational & Agricultural Pathology Field Advisory Certificate', 110, 1130);
-
-      // Trigger download of the single picture
-      const dataUri = canvas.toDataURL('image/png');
-      const downloadLink = document.createElement('a');
-      downloadLink.download = `agrovision-${result.diseaseId}-report.png`;
-      downloadLink.href = dataUri;
-      downloadLink.click();
+      await downloadDiagnosticReportPng(result, isUrdu, certificateId);
     } catch (err) {
-      console.warn('Canvas report generation:', err);
+      console.warn('PNG report generation failed:', err);
     } finally {
       setIsExportingImage(false);
+    }
+  };
+
+  const handleScreenshotReport = async () => {
+    try {
+      setIsExportingScreenshot(true);
+      await downloadDiagnosticReportScreenshot(result, isUrdu);
+    } catch (err) {
+      console.warn('Screenshot report generation failed:', err);
+    } finally {
+      setIsExportingScreenshot(false);
     }
   };
 
@@ -434,47 +299,81 @@ export const DiagnosticPrintModal: React.FC<DiagnosticPrintModalProps> = ({
     </div>
   );
 
-  return (
-    <>
-      {/* 1. On-Screen Modal Dialog */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
-        <div className="relative w-full max-w-3xl bg-[#faf8f2] rounded-3xl border-2 border-emerald-500/50 shadow-2xl overflow-hidden flex flex-col my-auto max-h-[92vh]">
+  const modalDialog = (
+    <div
+      className="fixed inset-0 overflow-y-auto overscroll-contain bg-black/75 backdrop-blur-md"
+      style={{ zIndex: 9990 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="diagnostic-print-modal-title"
+    >
+      <div className="flex min-h-full w-full items-center justify-center px-3 sm:px-6 pt-20 sm:pt-24 pb-4 sm:pb-6">
+        <div
+          className="relative w-full max-w-3xl my-auto bg-[#faf8f2] rounded-3xl border-2 border-emerald-500/50 shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-6.25rem)] sm:max-h-[calc(100dvh-7.5rem)]"
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* Top Floating Action Bar */}
-          <div className="no-print px-6 py-3.5 bg-white border-b border-[#cbdcd0] flex flex-wrap items-center justify-between gap-3 sticky top-0 z-30 shadow-xs">
+          <div className="no-print shrink-0 px-4 sm:px-6 py-3.5 bg-white border-b border-[#cbdcd0] flex flex-wrap items-center justify-between gap-3 z-30 shadow-xs">
             <div className="flex items-center gap-2 text-xs text-[#3d5947]">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-bold text-[#13281c]">
+              <span id="diagnostic-print-modal-title" className="font-bold text-[#13281c]">
                 {isUrdu ? 'تشخیصی سرٹیفکیٹ کارڈ پیش منظر' : 'Pathology Diagnostic Card (1 Page)'}
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
-              {/* Option A: Download Single Picture (PNG) */}
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={handleScreenshotReport}
+                disabled={isExportingScreenshot}
+                type="button"
+                className="px-3 py-2 bg-[#edf5ef] hover:bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
+                title={isUrdu ? 'رپورٹ کا اسکرین شاٹ محفوظ کریں' : 'Capture visual report screenshot'}
+              >
+                <Camera className="w-3.5 h-3.5 text-emerald-700" />
+                <span>
+                  {isExportingScreenshot
+                    ? isUrdu
+                      ? 'محفوظ ہو رہا ہے...'
+                      : 'Capturing...'
+                    : isUrdu
+                    ? 'اسکرین شاٹ رپورٹ'
+                    : 'Screenshot Report'}
+                </span>
+              </button>
+
               <button
                 onClick={handleDownloadSinglePicture}
                 disabled={isExportingImage}
                 type="button"
-                className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
-                title="Download 1 single image picture report"
+                className="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
+                title={isUrdu ? 'پی این جی تصویر ڈاؤنلوڈ کریں' : 'Download report as PNG'}
               >
                 <FileImage className="w-3.5 h-3.5 text-emerald-700" />
-                <span>{isUrdu ? 'ایک تصویر ڈاؤنلوڈ کریں' : 'Save 1 Picture (PNG)'}</span>
+                <span>
+                  {isExportingImage
+                    ? isUrdu
+                      ? 'تیار ہو رہا ہے...'
+                      : 'Saving...'
+                    : isUrdu
+                    ? 'پی این جی ڈاؤنلوڈ'
+                    : 'Download PNG'}
+                </span>
               </button>
 
-              {/* Option B: Print 1-Page A4 Certificate */}
               <button
                 onClick={handleTriggerPrint}
                 type="button"
-                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95"
+                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>{isUrdu ? 'سرٹیفکیٹ پرنٹ کریں (A4)' : 'Print Certificate (1 Page)'}</span>
+                <span>{isUrdu ? 'پرنٹ کریں' : 'Print'}</span>
               </button>
 
               <button
                 onClick={onClose}
                 type="button"
-                className="p-2 text-[#3d5947] hover:text-[#13281c] bg-[#edf5ef] hover:bg-emerald-100 rounded-xl transition-colors"
+                className="p-2 text-[#3d5947] hover:text-[#13281c] bg-[#edf5ef] hover:bg-emerald-100 rounded-xl transition-colors cursor-pointer"
                 aria-label="Close Preview"
               >
                 <X className="w-4 h-4" />
@@ -483,11 +382,18 @@ export const DiagnosticPrintModal: React.FC<DiagnosticPrintModalProps> = ({
           </div>
 
           {/* Scrollable Preview Area */}
-          <div className="p-4 sm:p-8 overflow-y-auto flex-1">
+          <div className="min-h-0 flex-1 p-4 sm:p-8 overflow-y-auto">
             {certificateContent}
           </div>
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* 1. On-Screen Modal Dialog Portaled to document.body */}
+      {typeof document !== 'undefined' && createPortal(modalDialog, document.body)}
 
       {/* 2. Dedicated Body Print Portal for Strict 1-Page Output */}
       {portalElement && createPortal(certificateContent, portalElement)}
